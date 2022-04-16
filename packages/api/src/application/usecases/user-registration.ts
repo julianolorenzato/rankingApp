@@ -1,14 +1,15 @@
 import { User, UserProps } from '@/domain/entities/user'
-import { UsersRepository } from '../repositories/users-repositories'
+import { UserRepository } from '../protocols/user-repository'
 
 export class UserRegistration {
-	private readonly userRepository: UsersRepository
+	private readonly userRepository: UserRepository
 
-    constructor (userRepo: UsersRepository) {
+    constructor (userRepo: UserRepository) {
         this.userRepository = userRepo
     }
 
     async exec(userProps: UserProps): Promise<User> {
-        const user = User.new(userProps)
+        const user = User.create(userProps)
+        return user
     }
 }

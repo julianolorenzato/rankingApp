@@ -1,11 +1,13 @@
 import { User } from '@/domain/entities/user/user'
 import { Vote } from '@/domain/entities/vote'
+import { Historic } from './historic'
 
 type PollProps = {
 	owner: User
 	options: string[]
 	votes: Vote[]
 	createdAt: Date
+	historic: Historic
 }
 
 export class Poll {

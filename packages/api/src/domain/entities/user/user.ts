@@ -1,13 +1,19 @@
-import { UserProps } from './user-props'
+import { Email } from './email'
+import { Username } from './username'
+
+export type UserProps = {
+	//id: string
+	username: Username
+	email: Email
+	createdAt: Date
+}
 
 export class User implements UserProps {
-	id
 	username
 	email
 	createdAt
 
-	private constructor({id, username, email, createdAt}: UserProps) {
-		this.id = id
+	private constructor({username, email, createdAt}: UserProps) {
 		this.username = username
 		this.email = email
 		this.createdAt = createdAt

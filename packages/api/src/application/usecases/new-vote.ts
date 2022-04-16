@@ -1,5 +1,5 @@
 import { Vote } from '@/domain/entities/vote'
-import { NewVoteRepository } from '../repositories/NewVoteRepository';
+import { NewVoteRepository } from '../protocols/NewVoteRepository';
 
 export class newVote {
     usersRepository

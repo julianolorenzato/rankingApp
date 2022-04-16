@@ -1,4 +1,4 @@
-import { Poll } from '@/domain/entities/poll'
+import { Poll } from '@/domain/entities/poll/poll'
 
 export class NewPoll {
     constructor(private readonly newPollRepository: NewPollRepository) {}
