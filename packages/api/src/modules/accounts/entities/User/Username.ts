@@ -1,4 +1,4 @@
-import { InvalidUsernameError } from "./errors/invalid-username-error"
+import { InvalidUsernameError } from "./errors/InvalidUsernameError"
 
 export class Username {
     private readonly username
@@ -6,6 +6,10 @@ export class Username {
     private constructor(username: string) {
         this.username = username
     }
+
+    get value(): string {
+		return this.username
+	}
 
     //validate(email) { either logic... }
     //format(email) { email.trim() }

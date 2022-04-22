@@ -5,7 +5,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js",
+    "start": "tsnd src/server.ts",
     "test": "jest --watchAll --noStackTrace --silent"
   },
   "keywords": [],
