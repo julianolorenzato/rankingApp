@@ -1,19 +1,28 @@
-import { User, UserProps } from '@/modules/accounts/entities/User'
+import { User, Username, Email, Password } from '@accounts/entities/User'
+import { IUserRegistrationDTO } from './UserRegistrationDTO'
 
 import { IUsersRepository } from '../../repositories/IUsersRepository'
 
-import { EmailAlreadyExistsError } from './errors/EmailAlreadyExistsError'
 import { UsernameAlreadyExistsError } from './errors/UsernameAlreadyExistsError'
+import { EmailAlreadyExistsError } from './errors/EmailAlreadyExistsError'
 
-export class UserRegistration {
+type UserRegistrationRequest = {
+	username: string
+	email: string
+	password: string
+}
+
+export class userRegistrationUseCase {
 	private readonly usersRepository: IUsersRepository
 
 	constructor(userRepo: IUsersRepository) {
 		this.usersRepository = userRepo
 	}
-
-	async execute(userProps: UserProps): Promise<void> {
-		const { username, email } = userProps
+	//DTO OU UserRegistrationRequest??
+	async execute(props: IUserRegistrationDTO): Promise<void> {
+		const username = Username.create(props.username)
+		const email = Email.create(props.email)
+		const password = Password.create(props.password)
 
 		const usernameAlreadyExists = await this.usersRepository.findByUsername(
 			username.value
@@ -28,11 +37,16 @@ export class UserRegistration {
 		)
 
 		if (emailAlreadyExists) {
-			throw new EmailAlreadyExistsError(username.value)
+			throw new EmailAlreadyExistsError(email.value)
 		}
 
-		const user = User.create(userProps)
-		
+		const user = User.create({
+			username,
+			email,
+			password,
+			createdAt: new Date()
+		})
+
 		await this.usersRepository.save(user)
 	}
 }

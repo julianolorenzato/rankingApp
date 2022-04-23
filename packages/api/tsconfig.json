@@ -5,7 +5,8 @@
 		"baseUrl": "src",
 		"rootDir": "src",
 		"paths": {
-			"@/*": ["*"]
+			"@*": ["modules/*"],
+			"@shared/*": ["shared/*"]
 		},
 		"strict": true
 	}

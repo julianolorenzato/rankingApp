@@ -1,4 +1,4 @@
-import { DomainError } from '@/modules/accounts/entities/User/errors/DomainError'
+import { DomainError } from '@accounts/entities/User/errors/DomainError'
 
 export class InvalidUsernameError extends Error implements DomainError {
 	constructor(username: string) {

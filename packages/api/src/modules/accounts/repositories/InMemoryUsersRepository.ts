@@ -1,15 +1,28 @@
-import { User } from "../entities/User";
-import { IUsersRepository } from "./IUsersRepository";
+import { User } from '@accounts/entities/User'
+import { IUsersRepository } from './IUsersRepository'
 
 export class InMemoryUserRepository implements IUsersRepository {
-    public items: User[] = []
+	public items: User[] = []
 
-    findByUsername(username: string): Promise<User> {
-        const user = this.items.find(user => user.username === username)
-        return
-    }
+	async findByUsername(username: string): Promise<User | null> {
+		const user = this.items.find(user => user.username === username)
+		if (!user) {
+			return null
+		}
 
-    save(user: User): Promise<void> {
-        
-    }
+		return user
+	}
+
+	async findByEmail(email: string): Promise<User | null> {
+		const user = this.items.find(user => user.email === email)
+		if (!user) {
+			return null
+		}
+
+		return user
+	}
+
+	async save(user: User): Promise<void> {
+		this.items.push(user)
+	}
 }
