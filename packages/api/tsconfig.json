@@ -2,12 +2,10 @@
 	"compilerOptions": {
 		"target": "ES2020",
 		"moduleResolution": "node",
+		"esModuleInterop": true,
 		"baseUrl": "src",
 		"rootDir": "src",
-		"paths": {
-			"@*": ["modules/*"],
-			"@shared/*": ["shared/*"]
-		},
+		"outDir": "dist",
 		"strict": true
 	}
 }
