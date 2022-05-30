@@ -1,6 +1,6 @@
 import { Either, right, left } from 'shared/logic/either'
 
-import { sign, verify } from 'jsonwebtoken'
+import { JwtPayload, sign, verify } from 'jsonwebtoken'
 import { auth } from '../../../shared/config/auth'
 
 import { User } from '../domain/user/User'
@@ -8,39 +8,47 @@ import { User } from '../domain/user/User'
 import { InvalidJWTTokenError } from './errors/invalid-jwt-token-error'
 import { AccessDeniedError } from 'modules/accounts/services/errors/access-denied-error'
 
-interface JWTData {
+interface JWTTokenPayload {
 	userId: string
-	token: string
+	username: string
 }
 
-interface JWTTokenPayload {
-	exp: number
-	sub: string
+interface JWTData {
+	payload: JWTTokenPayload
+	token: string
 }
 
 type Errors = InvalidJWTTokenError | AccessDeniedError
 
-export class JWT {
-	public readonly userId: string
+export class JWT implements JWTData {
+	public readonly payload: JWTTokenPayload
 	public readonly token: string
 
-	private constructor({ userId, token }: JWTData) {
-		this.userId = userId
+	private constructor({ payload, token }: JWTData) {
+		this.payload = payload
 		this.token = token
 	}
 
 	static signUser(user: User): JWT {
-		const token = sign({ userId: user.id }, auth.secretKey, {
+		const payload: JWTTokenPayload = {
+			username: user.username.value,
+			userId: user.id
+		}
+
+		const token = sign(payload, auth.secretKey, {
 			expiresIn: auth.expiresIn
 		})
 
-		const jwt = new JWT({ userId: user.id, token })
+		const jwt = new JWT({
+			payload,
+			token
+		})
 
 		return jwt
 	}
 
 	static verifyUserToken(token?: string): Either<Errors, JWT> {
-		if(!token) {
+		if (!token) {
 			return left(new InvalidJWTTokenError())
 		}
 
@@ -48,7 +56,10 @@ export class JWT {
 			const decoded = verify(token, auth.secretKey) as JWTTokenPayload
 
 			const jwt = new JWT({
-				userId: decoded.sub,
+				payload: {
+					userId: decoded.userId,
+					username: decoded.username
+				},
 				token
 			})
 

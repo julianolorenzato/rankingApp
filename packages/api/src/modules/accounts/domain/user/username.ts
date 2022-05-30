@@ -1,7 +1,7 @@
 import { Either, left, right } from 'shared/logic/either'
 import { ValueObject } from 'shared/domain/value-object'
 
-import { InvalidLengthError } from './errors/invalid-length-error'
+import { InvalidLengthError } from '../../../../shared/errors/invalid-length-error'
 
 interface IUsernameProps {
 	value: string
@@ -19,7 +19,7 @@ export class Username extends ValueObject<IUsernameProps> {
 		return this.props.value
 	}
 
-	static validate(username: string): boolean {
+	private static validate(username: string): boolean {
 		const len = username.length
 
 		if (len > this.MAX_LENGTH || len < this.MIN_LENGTH) {

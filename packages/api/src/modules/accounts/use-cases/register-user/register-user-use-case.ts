@@ -1,21 +1,16 @@
 import { Either, left, right } from 'shared/logic/either'
-import { UseCase } from 'shared/core/use-case'
+import { UseCase } from 'shared/application/use-case'
 
 import { User, Username, Email, Password } from 'modules/accounts/domain/user'
 
-import { IUsersRepository } from '../../repositories/user-repository'
-
-import { UsernameAlreadyExistsError } from './errors/username-already-exists-error'
-import { EmailAlreadyExistsError } from './errors/email-already-exists-error'
+import { IUserRepository } from '../../repositories/user-repository'
 
 import { InvalidEmailFormatError } from 'modules/accounts/domain/user/errors/invalid-email-format-error'
-import { InvalidLengthError } from 'modules/accounts/domain/user/errors/invalid-length-error'
+import { InvalidLengthError } from 'shared/errors/invalid-length-error'
+import { EventsDispatcher } from 'shared/domain/events/events-dispatcher'
+import { AlreadyExistsError } from 'shared/errors/already-exists-error'
 
-type Errors =
-	| UsernameAlreadyExistsError
-	| EmailAlreadyExistsError
-	| InvalidEmailFormatError
-	| InvalidLengthError
+type Errors = InvalidLengthError | InvalidEmailFormatError | AlreadyExistsError
 
 type UseCaseRequest = {
 	username: string
@@ -25,13 +20,11 @@ type UseCaseRequest = {
 
 type UseCaseResponse = Either<Errors, User>
 
-export class RegisterUserUseCase
-	implements UseCase<UseCaseRequest, UseCaseResponse>
-{
-	private readonly usersRepository
+export class RegisterUserUseCase implements UseCase<UseCaseRequest, UseCaseResponse> {
+	private readonly userRepository: IUserRepository
 
-	constructor(usersRepo: IUsersRepository) {
-		this.usersRepository = usersRepo
+	constructor(usersRepo: IUserRepository) {
+		this.userRepository = usersRepo
 	}
 
 	async execute(data: UseCaseRequest): Promise<UseCaseResponse> {
@@ -51,23 +44,21 @@ export class RegisterUserUseCase
 			password: passwordOrError.value
 		})
 
-		const usernameAlreadyExists = await this.usersRepository.findByUsername(
-			user.username.value
-		)
+		const usernameAlreadyExists = await this.userRepository.findByUsername(user.username.value)
 
 		if (usernameAlreadyExists) {
-			return left(new UsernameAlreadyExistsError(user.username.value))
+			return left(new AlreadyExistsError('username', user.username.value))
 		}
 
-		const emailAlreadyExists = await this.usersRepository.findByEmail(
-			user.email.value
-		)
+		const emailAlreadyExists = await this.userRepository.findByEmail(user.email.value)
 
 		if (emailAlreadyExists) {
-			return left(new EmailAlreadyExistsError(user.email.value))
+			return left(new AlreadyExistsError('email', user.email.value))
 		}
 
-		await this.usersRepository.save(user)
+		await this.userRepository.save(user)
+
+		EventsDispatcher.dispatchEventsForAggregate(user.id)
 
 		return right(user)
 	}

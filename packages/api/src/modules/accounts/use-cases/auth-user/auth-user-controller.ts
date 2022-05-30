@@ -18,9 +18,9 @@ export class AuthUserController {
 				return res.status(400).json({ error })
 			}
 
-			return res.status(200).send(result.value)
+			return res.status(200).json(result.value)
 		} catch (e) {
-			if (e instanceof Error) res.status(500).json({ error: e.message })
+			if (e instanceof Error) return res.status(500).json({ error: e.message })
 		}
 	}
 }

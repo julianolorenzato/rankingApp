@@ -1,8 +1,17 @@
 import { User } from 'modules/accounts/domain/user'
-import { IUsersRepository } from '../user-repository'
+import { IUserRepository } from '../user-repository'
 
-class InMemoryUserRepository implements IUsersRepository {
+class InMemoryUserRepository implements IUserRepository {
 	public items: User[] = []
+
+	async findById(id: string): Promise<User | null> {
+		const user = this.items.find(user => user.id === id)
+		if (!user) {
+			return null
+		}
+
+		return user
+	}
 
 	async findByUsername(username: string): Promise<User | null> {
 		const user = this.items.find(user => user.username.value === username)

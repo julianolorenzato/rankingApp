@@ -1,6 +1,6 @@
-export interface UserDTO {
+export interface IUserDTO {
     id: string
     username: string
     email: string
-    createdAt: string
+    createdAt: Date
 }

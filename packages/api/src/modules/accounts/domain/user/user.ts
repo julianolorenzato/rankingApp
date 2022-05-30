@@ -1,8 +1,9 @@
-import { Entity } from 'shared/domain/entity'
+import { AggregateRoot } from 'shared/domain/aggregate-root'
 
 import { Username } from './username'
 import { Email } from './email'
 import { Password } from './password'
+import { UserRegistered } from './events/user-registered'
 
 interface IUserProps {
 	username: Username
@@ -10,7 +11,7 @@ interface IUserProps {
 	password: Password
 }
 
-export class User extends Entity<IUserProps> {
+export class User extends AggregateRoot<IUserProps> {
 	private constructor(props: IUserProps, id?: string, createdAt?: Date) {
 		super(props, id, createdAt)
 	}
@@ -28,6 +29,13 @@ export class User extends Entity<IUserProps> {
 	}
 
 	static create(props: IUserProps, id?: string, createdAt?: Date) {
-		return new User(props, id, createdAt)
+		const isNewUser = !id
+		const user = new User(props, id, createdAt)
+
+		if (isNewUser) {
+			user.addDomainEvent(new UserRegistered(user))
+		}
+
+		return user
 	}
 }

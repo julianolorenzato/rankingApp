@@ -1,9 +1,9 @@
 import { randomUUID } from 'crypto'
 
 export abstract class Entity<T> {
-	protected _id
-    protected _createdAt
-    public props
+	protected _id: string
+    protected _createdAt: Date
+    public props: T
 
 	constructor(props: T, id?: string, createdAt?: Date) {
         this.props = props

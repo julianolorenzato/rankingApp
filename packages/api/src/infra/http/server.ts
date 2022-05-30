@@ -1,5 +1,6 @@
 import express from 'express'
 import { router } from 'infra/http/routes'
+import 'modules/social/subscriptions'
 
 const PORT = 3333
 

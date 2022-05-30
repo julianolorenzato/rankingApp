@@ -2,7 +2,7 @@ import { Either, left, right } from 'shared/logic/either'
 import { ValueObject } from 'shared/domain/value-object'
 
 import { InvalidEmailFormatError } from './errors/invalid-email-format-error'
-import { InvalidLengthError } from './errors/invalid-length-error'
+import { InvalidLengthError } from '../../../../shared/errors/invalid-length-error'
 
 interface IEmailProps {
 	value: string

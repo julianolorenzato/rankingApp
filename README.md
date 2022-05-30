@@ -19,4 +19,6 @@ Each `User` have a `UserRole`
 
 
 -----
-JA FIZ USERROLE E PASSWORD
+Usar classe guard talvez?
+
+Events para adicionar coisas ao feed talvez???

@@ -2,7 +2,7 @@ import { ValueObject } from 'shared/domain/value-object'
 import { Either, left, right } from 'shared/logic/either'
 import bcrypt from 'bcrypt'
 
-import { InvalidLengthError } from './errors/invalid-length-error'
+import { InvalidLengthError } from '../../../../shared/errors/invalid-length-error'
 
 interface IPasswordProps {
 	value: string
@@ -22,7 +22,7 @@ export class Password extends ValueObject<IPasswordProps> {
 		return this.props.value
 	}
 
-	static validate(password: string): boolean {
+	private static validate(password: string): boolean {
 		const len = password.length
 
 		if (len > this.MAX_LENGTH || len < this.MIN_LENGTH) {
