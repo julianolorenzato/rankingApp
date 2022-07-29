@@ -1,7 +1,7 @@
 import { User } from 'modules/accounts/domain/user'
 import { IUserRepository } from '../user-repository'
 
-class InMemoryUserRepository implements IUserRepository {
+export class InMemoryUserRepository implements IUserRepository {
 	public items: User[] = []
 
 	async findById(id: string): Promise<User | null> {

@@ -1,16 +1,16 @@
-import { inMemoryUserRepositoryInstace } from 'modules/accounts/repositories/in-memory/in-memory-user-repository'
+import { InMemoryUserRepository, inMemoryUserRepositoryInstace } from 'modules/accounts/repositories/in-memory/in-memory-user-repository'
 import { RegisterUserUseCase } from './register-user-use-case'
 import { IUserRepository } from '../../repositories/user-repository'
 import { User } from 'modules/accounts/domain/user'
 import { AlreadyExistsError } from 'shared/errors/already-exists-error'
 import { inMemoryMembersRepositoryInstance } from 'modules/social/repositories/implementations/in-memory-member-repository'
 
-describe('UseCase:', () => {
+describe('UseCase - RegisterUser', () => {
 	let userRepository: IUserRepository
 	let registerUserUseCase: RegisterUserUseCase
 
 	beforeAll(() => {
-		userRepository = new 
+		userRepository = new InMemoryUserRepository()
 		registerUserUseCase = new RegisterUserUseCase(userRepository)
 	})
 

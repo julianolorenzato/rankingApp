@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt'
 
 import { InvalidLengthError } from '../../../../shared/errors/invalid-length-error'
 
-interface IPasswordProps {
+export interface IPasswordProps {
 	value: string
 	hashed?: boolean
 }
@@ -18,10 +18,6 @@ export class Password extends ValueObject<IPasswordProps> {
 		super(props)
 	}
 
-	get value(): string {
-		return this.props.value
-	}
-
 	private static validate(password: string): boolean {
 		const len = password.length
 
@@ -32,6 +28,7 @@ export class Password extends ValueObject<IPasswordProps> {
 		return true
 	}
 
+	// Por que não hashear no momento do create e ter uma senha hasheada sempre? Sem ter que fazer verificações
 	public async getHashedPassword(): Promise<string> {
 		if (this.props.hashed) {
 			return this.props.value
@@ -52,6 +49,8 @@ export class Password extends ValueObject<IPasswordProps> {
 		value,
 		hashed = false
 	}: IPasswordProps): Either<Error, Password> {
+		value = value.trim()
+
 		if (!hashed && !this.validate(value)) {
 			return left(new InvalidLengthError('password'))
 		}
