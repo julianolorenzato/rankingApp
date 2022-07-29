@@ -4,7 +4,7 @@ import { ValueObject } from 'shared/domain/value-object'
 import { InvalidEmailFormatError } from './errors/invalid-email-format-error'
 import { InvalidLengthError } from '../../../../shared/errors/invalid-length-error'
 
-interface IEmailProps {
+export interface IEmailProps {
 	value: string
 }
 
@@ -34,11 +34,11 @@ export class Email extends ValueObject<IEmailProps> {
 	}
 
 	static create({ value }: IEmailProps): Either<Error, Email> {
-		if (!this.validateFormat(value)) {
-			return left(new InvalidEmailFormatError(value))
-		} else if (!this.validate(value)) {
-			return left(new InvalidLengthError('email', value))
-		}
+		const isFormatValid = this.validateFormat(value)
+		const isValid = this.validate(value)
+
+		if (!isFormatValid) return left(new InvalidEmailFormatError(value))
+		if (!isValid) return left(new InvalidLengthError('email', value))
 
 		return right(new Email({ value }))
 	}
