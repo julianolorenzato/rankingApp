@@ -1,7 +1,7 @@
 import { InvalidLengthError } from "shared/errors/invalid-length-error"
 import { Username } from "./username"
 
-describe('VO: user/username', () => {
+describe('VO - user/username', () => {
     it('should ble able to create a new username', () => {
 		const testValue = 'username with spaces'
 		const username = Username.create({ value: testValue })

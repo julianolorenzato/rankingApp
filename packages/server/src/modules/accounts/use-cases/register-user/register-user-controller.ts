@@ -1,6 +1,6 @@
 import { RegisterUserUseCase } from './register-user-use-case'
 import { Request, Response } from 'express'
-import { IUserDTO } from 'modules/accounts/dtos/user-dto'
+import { UserDTO } from 'modules/accounts/dtos/user-dto'
 
 export class RegisterUserController {
 	constructor(private registerUserUseCase: RegisterUserUseCase) {}
@@ -20,11 +20,10 @@ export class RegisterUserController {
 				return res.status(400).json({ error })
 			}
 
-			const response: IUserDTO = {
+			const response: UserDTO = {
 				id: result.value.id,
 				email: result.value.email.value,
-				username: result.value.username.value,
-				createdAt: result.value.createdAt
+				username: result.value.username.value
 			}
 
 			return res.status(201).json(response)

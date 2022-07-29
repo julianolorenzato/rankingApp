@@ -3,7 +3,7 @@ import { Either, right, left } from 'shared/logic/either'
 import { JwtPayload, sign, verify } from 'jsonwebtoken'
 import { auth } from '../../../shared/config/auth'
 
-import { User } from '../domain/user/User'
+import { User } from '../domain/user/user'
 
 import { InvalidJWTTokenError } from './errors/invalid-jwt-token-error'
 import { AccessDeniedError } from 'modules/accounts/services/errors/access-denied-error'

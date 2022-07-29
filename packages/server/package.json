@@ -7,7 +7,7 @@
   "scripts": {
     "start": "tsnd -r tsconfig-paths/register src/infra/http/server.ts",
     "build": "tsc",
-    "test": "jest --watchAll --noStackTrace --silent"
+    "test": "jest --watchAll --noStackTrace --silent --detectOpenHandles"
   },
   "keywords": [],
   "author": "",
