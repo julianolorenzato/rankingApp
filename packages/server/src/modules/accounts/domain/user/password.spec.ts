@@ -16,18 +16,20 @@ describe('VO - user/password', () => {
 		})
 	})
 
-	it('should not be able to create a password with invalid length', () => {
-		const shortValue = 'aVeryLargePasswordHowCanIRememberThis????'
-		const longPassword = Password.create({ value: shortValue })
-
-		expect(longPassword.value).toBeInstanceOf(InvalidLengthError)
-		expect(longPassword.value).toStrictEqual(new InvalidLengthError('password'))
-
-		const longValue = 'sh'
-		const shortPassword = Password.create({ value: longValue })
+	it('should not be able to create a password with less than 7 chars', () => {
+		const shortValue = '123456'
+		const shortPassword = Password.create({ value: shortValue })
 
 		expect(shortPassword.value).toBeInstanceOf(InvalidLengthError)
 		expect(shortPassword.value).toStrictEqual(new InvalidLengthError('password'))
+	})
+
+	it('should not be able to create a password with more than 40 chars', () => {
+		const longValue = 'aVeryLargePasswordHowCanIRememberThis????'
+		const longPassword = Password.create({ value: longValue })
+
+		expect(longPassword.value).toBeInstanceOf(InvalidLengthError)
+		expect(longPassword.value).toStrictEqual(new InvalidLengthError('password'))
 	})
 
 	it('should be able to hash a password', async () => {

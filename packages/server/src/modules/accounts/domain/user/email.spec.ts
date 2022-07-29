@@ -4,7 +4,7 @@ import { Email } from './email'
 import { InvalidEmailFormatError } from './errors/invalid-email-format-error'
 
 describe('VO - user/email', () => {
-	it('should create a new email', () => {
+	it('should be able to create a new email', () => {
 		const testValue = 'brownbear@bears.com'
 		const email = Email.create({ value: testValue })
 
