@@ -3,13 +3,12 @@ import { RegisterUserUseCase } from './register-user-use-case'
 import { IUserRepository } from '../../repositories/user-repository'
 import { User } from 'modules/accounts/domain/user'
 import { AlreadyExistsError } from 'shared/errors/already-exists-error'
-import { inMemoryMembersRepositoryInstance } from 'modules/social/repositories/implementations/in-memory-member-repository'
 
 describe('UseCase - RegisterUser', () => {
 	let userRepository: IUserRepository
 	let registerUserUseCase: RegisterUserUseCase
 
-	beforeAll(() => {
+	beforeEach(() => {
 		userRepository = new InMemoryUserRepository()
 		registerUserUseCase = new RegisterUserUseCase(userRepository)
 	})
@@ -26,34 +25,38 @@ describe('UseCase - RegisterUser', () => {
 	})
 
 	it('shoud not be able to register a user with an username that already exists', async () => {
+		const sameUsername = 'darkcat'
+
 		await registerUserUseCase.execute({
-			username: 'darkcat',
+			username: sameUsername,
 			email: 'dogrival@catsmail.com',
 			password: 'meow123456'
 		})
 
 		const user = await registerUserUseCase.execute({
-			username: 'thecoolguy',
+			username: sameUsername,
 			email: 'bigpineapple@bubble.com',
 			password: 'themostsecretpassintheworld'
 		})
-        console.log(user.value)
-		expect(user.value).toStrictEqual(new AlreadyExistsError('username', 'thecoolguy'))
+
+		expect(user.value).toStrictEqual(new AlreadyExistsError('username', sameUsername))
 	})
 
 	it('should not be able to register a user with an email that already exists', async () => {
+		const sameEmail = 'dogrival@catsmail.com'
+
         await registerUserUseCase.execute({
 			username: 'darkcat',
-			email: 'dogrival@catsmail.com',
+			email: sameEmail,
 			password: 'meow123456'
 		})
 
         const user = await registerUserUseCase.execute({
 			username: 'thecoolguy',
-			email: 'bigpineapple@bubble.com',
+			email: sameEmail,
 			password: 'themostsecretpassintheworld'
 		})
 
-        expect(user.value).toStrictEqual(new AlreadyExistsError('username', 'thecoolguy'))
+        expect(user.value).toStrictEqual(new AlreadyExistsError('email', sameEmail))
     })
 })
