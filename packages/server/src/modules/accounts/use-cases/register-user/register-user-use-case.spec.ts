@@ -41,7 +41,7 @@ describe('UseCase - RegisterUser', () => {
 		expect(user.value).toStrictEqual(new AlreadyExistsError('username', 'thecoolguy'))
 	})
 
-	it('should not be able to register a user with an email that aready exists', async () => {
+	it('should not be able to register a user with an email that already exists', async () => {
         await registerUserUseCase.execute({
 			username: 'darkcat',
 			email: 'dogrival@catsmail.com',
