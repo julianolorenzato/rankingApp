@@ -4,7 +4,7 @@ import { Either, left, right } from 'shared/logic/either'
 import { IUserRepository } from '../../repositories/user-repository'
 import { InvalidEmailOrPasswordError } from './errors/invalid-email-or-password-error'
 
-type TokenResponse = {
+export type TokenResponse = {
 	token: string
 }
 
