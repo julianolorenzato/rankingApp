@@ -21,4 +21,8 @@ Each `User` have a `UserRole`
 -----
 Usar classe guard talvez?
 
+Fazer validation no controller
+
+Ver onde fica o dto (input e output de usecases ou na resposta do controller)
+
 Events para adicionar coisas ao feed talvez???
