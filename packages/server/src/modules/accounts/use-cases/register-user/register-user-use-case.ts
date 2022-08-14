@@ -58,7 +58,7 @@ export class RegisterUserUseCase implements UseCase<Input, Output> {
 
 		await this.userRepository.save(user)
 
-		// EventsDispatcher.dispatchEventsForAggregate(user.id)
+		EventsDispatcher.dispatchEventsForAggregate(user.id)
 
 		return right(user)
 	}

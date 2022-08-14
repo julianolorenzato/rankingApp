@@ -3,10 +3,15 @@ import { RegisterUserUseCase } from './register-user-use-case'
 import { IUserRepository } from '../../repositories/user-repository'
 import { User } from 'modules/accounts/domain/user'
 import { AlreadyExistsError } from 'shared/errors/already-exists-error'
+import { EventsDispatcher } from 'shared/events/events-dispatcher'
+import { IMemberRepository } from 'modules/social/repositories/member-repository'
 
 describe('UseCase - RegisterUser', () => {
 	let userRepository: IUserRepository
 	let registerUserUseCase: RegisterUserUseCase
+	let memberRepository: IMemberRepository
+
+	const mockFn = jest.fn()
 
 	beforeEach(() => {
 		userRepository = new InMemoryUserRepository()
@@ -23,6 +28,10 @@ describe('UseCase - RegisterUser', () => {
 		expect(user.value).toBeInstanceOf(User)
 		expect(user.value).toHaveProperty('id')
 	})
+
+	// it('should be able to dispatch an UserRegistered event after register a new user', async () => {
+
+	// })
 
 	it('shoud not be able to register a user with an username that already exists', async () => {
 		const sameUsername = 'darkcat'
