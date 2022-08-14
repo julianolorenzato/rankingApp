@@ -1,5 +1,5 @@
 import { Username } from 'modules/accounts/domain/user'
-import { AggregateRoot } from 'shared/domain/aggregate-root'
+import { AggregateRoot } from 'base/domain/aggregate-root'
 
 interface IMemberProps {
 	userId: string

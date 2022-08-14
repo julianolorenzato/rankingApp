@@ -1,5 +1,5 @@
-import { AggregateRoot } from '../aggregate-root'
-import { IDomainEvent } from './domain-event'
+import { AggregateRoot } from '../../base/domain/aggregate-root'
+import { IDomainEvent } from '../../base/domain/domain-event'
 
 type HandlerFunction = (event: IDomainEvent) => void | Promise<void>
 

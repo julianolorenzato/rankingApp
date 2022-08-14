@@ -1,7 +1,7 @@
 import { Either, right, left } from 'shared/logic/either'
 
 import { JwtPayload, sign, verify } from 'jsonwebtoken'
-import { auth } from '../../../shared/config/auth'
+import { auth } from '../../../config/auth'
 
 import { User } from '../domain/user/user'
 

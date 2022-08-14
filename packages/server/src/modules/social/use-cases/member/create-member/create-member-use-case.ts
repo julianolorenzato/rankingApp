@@ -1,5 +1,5 @@
 import { IUserRepository } from 'modules/accounts/repositories/user-repository'
-import { UseCase } from 'shared/application/use-case'
+import { UseCase } from 'base/application/use-case'
 import { Member } from '../../../domain/member/member'
 import { Either, left } from 'shared/logic/either'
 import { IMemberRepository } from '../../../repositories/member-repository'

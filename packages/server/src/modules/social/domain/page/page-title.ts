@@ -1,4 +1,4 @@
-import { ValueObject } from 'shared/domain/value-object'
+import { ValueObject } from 'base/domain/value-object'
 import { InvalidLengthError } from 'shared/errors/invalid-length-error'
 import { Either, left, right } from 'shared/logic/either'
 

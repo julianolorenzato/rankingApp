@@ -1,5 +1,5 @@
-import { IDomainEvent } from './events/domain-event'
-import { EventsDispatcher } from './events/events-dispatcher'
+import { IDomainEvent } from './domain-event'
+import { EventsDispatcher } from '../../shared/events/events-dispatcher'
 import { Entity } from './entity'
 
 export abstract class AggregateRoot<T> extends Entity<T> {

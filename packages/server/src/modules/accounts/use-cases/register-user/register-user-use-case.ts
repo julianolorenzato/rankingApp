@@ -1,5 +1,5 @@
 import { Either, left, right } from 'shared/logic/either'
-import { UseCase } from 'shared/application/use-case'
+import { UseCase } from 'base/application/use-case'
 
 import { User, Username, Email, Password } from 'modules/accounts/domain/user'
 
@@ -7,7 +7,7 @@ import { IUserRepository } from '../../repositories/user-repository'
 
 import { InvalidEmailFormatError } from 'modules/accounts/domain/user/errors/invalid-email-format-error'
 import { InvalidLengthError } from 'shared/errors/invalid-length-error'
-import { EventsDispatcher } from 'shared/domain/events/events-dispatcher'
+import { EventsDispatcher } from 'shared/events/events-dispatcher'
 import { AlreadyExistsError } from 'shared/errors/already-exists-error'
 
 type Errors = InvalidLengthError | InvalidEmailFormatError | AlreadyExistsError

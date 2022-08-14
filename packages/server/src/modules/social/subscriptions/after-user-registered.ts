@@ -1,5 +1,5 @@
-import { IHandler } from 'shared/domain/events/event-handler'
-import { EventsDispatcher } from 'shared/domain/events/events-dispatcher'
+import { IHandler } from 'base/domain/event-handler'
+import { EventsDispatcher } from 'shared/events/events-dispatcher'
 import { UserRegistered } from 'modules/accounts/domain/user/events/user-registered'
 import { CreateMemberUseCase } from '../use-cases/member/create-member/create-member-use-case'
 

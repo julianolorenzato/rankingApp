@@ -1,6 +1,6 @@
 import { Member } from "modules/social/domain/member/member";
 import { IMemberRepository } from "modules/social/repositories/member-repository";
-import { UseCase } from "shared/application/use-case";
+import { UseCase } from "base/application/use-case";
 
 type UseCaseRequest = {
     amount: number

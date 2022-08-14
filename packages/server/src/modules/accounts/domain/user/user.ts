@@ -1,4 +1,4 @@
-import { AggregateRoot } from 'shared/domain/aggregate-root'
+import { AggregateRoot } from 'base/domain/aggregate-root'
 
 import { Username } from './username'
 import { Email } from './email'

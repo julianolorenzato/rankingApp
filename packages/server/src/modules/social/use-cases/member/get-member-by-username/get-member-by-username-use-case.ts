@@ -1,5 +1,5 @@
 import { Either, left, right } from 'shared/logic/either'
-import { UseCase } from 'shared/application/use-case'
+import { UseCase } from 'base/application/use-case'
 
 import { Member } from 'modules/social/domain/member/member'
 
