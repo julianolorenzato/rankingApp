@@ -1,5 +1,6 @@
 import { Mapper } from 'shared/contracts/infra/mapper'
-import { User } from '../domain/user'
+import { UnexpectedError } from 'shared/errors/unexpected-error'
+import { Email, Password, User, Username } from '../domain/user'
 import { UserDTO } from '../dtos/user-dto'
 
 interface PersistenceUser {
@@ -12,9 +13,29 @@ interface PersistenceUser {
 }
 
 export class UserMapper implements Mapper<User, PersistenceUser, UserDTO> {
-	toDomain(rawData: PersistenceUser): User {
-        
-    }
+	toDomain(rawData: PersistenceUser): User | Error {
+		const { id, username, email, password, createdAt } = rawData
+
+		const usernameOrError = Username.create({ value: username })
+		const emailOrError = Email.create({ value: email })
+		const passwordOrError = Password.create({ value: password })
+
+		if (usernameOrError.isLeft()) return new UnexpectedError()
+		if (emailOrError.isLeft()) return new UnexpectedError()
+		if (passwordOrError.isLeft()) return new UnexpectedError()
+
+		const user = User.create(
+			{
+				username: usernameOrError.value,
+				email: emailOrError.value,
+				password: passwordOrError.value
+			},
+			id,
+			createdAt
+		)
+
+        return user
+	}
 
 	async toPersistence(entity: User): Promise<PersistenceUser> {
 		return {
