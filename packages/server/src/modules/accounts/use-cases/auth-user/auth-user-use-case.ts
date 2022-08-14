@@ -8,8 +8,8 @@ export type TokenResponse = {
 	token: string
 }
 
-type UseCaseResponse = Either<InvalidEmailOrPasswordError, TokenResponse>
-type UseCaseRequest = {
+type Output = Either<InvalidEmailOrPasswordError, TokenResponse>
+type Input = {
 	email: string
 	password: string
 }
@@ -21,7 +21,7 @@ export class AuthUserUseCase {
 		this.userRepository = usersRepo
 	}
 
-	async execute(data: UseCaseRequest): Promise<UseCaseResponse> {
+	async execute(data: Input): Promise<Output> {
 		const { email, password } = data
 
 		const user = await this.userRepository.findByEmail(email)

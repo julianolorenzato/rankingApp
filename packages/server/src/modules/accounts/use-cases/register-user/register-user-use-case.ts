@@ -1,5 +1,5 @@
 import { Either, left, right } from 'shared/logic/either'
-import { UseCase } from 'base/application/use-case'
+import { UseCase } from 'shared/contracts/application/use-case'
 
 import { User, Username, Email, Password } from 'modules/accounts/domain/user'
 
@@ -12,22 +12,22 @@ import { AlreadyExistsError } from 'shared/errors/already-exists-error'
 
 type Errors = InvalidLengthError | InvalidEmailFormatError | AlreadyExistsError
 
-type UseCaseRequest = {
+type Input = {
 	username: string
 	email: string
 	password: string
 }
 
-type UseCaseResponse = Either<Errors, User>
+type Output = Either<Errors, User>
 
-export class RegisterUserUseCase implements UseCase<UseCaseRequest, UseCaseResponse> {
+export class RegisterUserUseCase implements UseCase<Input, Output> {
 	private readonly userRepository: IUserRepository
 
 	constructor(usersRepo: IUserRepository) {
 		this.userRepository = usersRepo
 	}
 
-	async execute(data: UseCaseRequest): Promise<UseCaseResponse> {
+	async execute(data: Input): Promise<Output> {
 		const { username, email, password } = data
 
 		const usernameOrError = Username.create({ value: username })

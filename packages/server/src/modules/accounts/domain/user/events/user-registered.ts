@@ -1,4 +1,4 @@
-import { IDomainEvent } from 'base/domain/domain-event'
+import { IDomainEvent } from 'shared/contracts/domain/domain-event'
 import { User } from '../user'
 
 export class UserRegistered implements IDomainEvent {

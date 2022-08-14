@@ -1,4 +1,4 @@
-import { AggregateRoot } from 'shared/domain/aggregate-root'
+import { AggregateRoot } from 'shared/contracts/domain/aggregate-root'
 
 import { PageDescription } from './page-description'
 import { PageTitle } from './page-title'

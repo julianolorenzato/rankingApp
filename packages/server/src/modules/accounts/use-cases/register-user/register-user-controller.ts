@@ -1,34 +1,48 @@
 import { RegisterUserUseCase } from './register-user-use-case'
-import { Request, Response } from 'express'
+// import { Request, Response } from 'express'
 import { UserDTO } from 'modules/accounts/dtos/user-dto'
+import { Controller } from 'shared/contracts/infra/controller'
 
-export class RegisterUserController {
-	constructor(private registerUserUseCase: RegisterUserUseCase) {}
+type Request = {
+	username: string,
+	email: string,
+	password: string
+}
 
-	async handle(req: Request, res: Response) {
-		const { username, email, password } = req.body
+type Response = UserDTO
 
-		try {
-			const result = await this.registerUserUseCase.execute({
+export class RegisterUserController extends Controller<Request, Response> {
+	constructor(private registerUserUseCase: RegisterUserUseCase) {
+		super()
+	}
+
+	protected async handle(req: Request) {
+		const { username, email, password } = req
+
+		// try {
+			const output = await this.registerUserUseCase.execute({
 				username,
 				email,
 				password
 			})
 
-			if (result.isLeft()) {
-				const error = result.value.message
-				return res.status(400).json({ error })
+			if (output.isLeft()) {
+				const error = output.value
+
+				return this.clientError(error)
+				// return res.status(400).json({ error })
 			}
 
 			const response: UserDTO = {
-				id: result.value.id,
-				email: result.value.email.value,
-				username: result.value.username.value
+				id: output.value.id,
+				email: output.value.email.value,
+				username: output.value.username.value
 			}
 
-			return res.status(201).json(response)
-		} catch (e) {
-			if (e instanceof Error) return res.status(500).json({ error: e.message })
-		}
+			return this.created(response)
+			// return res.status(201).json(response)
+		// } catch (e) {
+		// 	if (e instanceof Error) return res.status(500).json({ error: e.message })
+		// }
 	}
 }

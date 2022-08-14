@@ -1,5 +1,5 @@
 import { Either, left, right } from 'shared/logic/either'
-import { ValueObject } from 'base/domain/value-object'
+import { ValueObject } from 'shared/contracts/domain/value-object'
 
 import { InvalidEmailFormatError } from './errors/invalid-email-format-error'
 import { InvalidLengthError } from '../../../../shared/errors/invalid-length-error'

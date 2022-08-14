@@ -1,4 +1,4 @@
-import { IHandler } from 'base/domain/event-handler'
+import { IHandler } from 'shared/contracts/domain/event-handler'
 import { EventsDispatcher } from 'shared/events/events-dispatcher'
 import { UserRegistered } from 'modules/accounts/domain/user/events/user-registered'
 import { CreateMemberUseCase } from '../use-cases/member/create-member/create-member-use-case'
