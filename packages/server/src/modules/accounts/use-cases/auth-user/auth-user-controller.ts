@@ -1,26 +1,29 @@
 import { AuthUserUseCase } from './auth-user-use-case'
-import { Request, Response } from 'express'
+import { Controller } from 'shared/contracts/infra/controller'
 
-export class AuthUserController {
-	constructor(private authUserUseCase: AuthUserUseCase) {}
+type RequestData = {
+	email: string
+	password: string
+}
 
-	async handle(req: Request, res: Response) {
-		const { email, password } = req.body
+export class AuthUserController extends Controller<RequestData> {
+	constructor(private authUserUseCase: AuthUserUseCase) {
+		super()
+	}
 
-		try {
-			const result = await this.authUserUseCase.execute({
-				email,
-				password
-			})
+	async handle(requestData: RequestData) {
+		const { email, password } = requestData
 
-			if (result.isLeft()) {
-				const error = result.value.message
-				return res.status(400).json({ error })
-			}
+		const result = await this.authUserUseCase.execute({
+			email,
+			password
+		})
 
-			return res.status(200).json(result.value)
-		} catch (e) {
-			if (e instanceof Error) return res.status(500).json({ error: e.message })
+		if (result.isLeft()) {
+			const error = result.value
+			return this.clientError(error)
 		}
+
+		return this.ok()
 	}
 }

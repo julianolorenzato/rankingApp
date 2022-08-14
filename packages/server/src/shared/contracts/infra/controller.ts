@@ -1,31 +1,24 @@
-export type HttpResponse<T = any> = {
-	statusCode: number
-	body: {
-		[K in 'data' | 'error']?: T
-	}
-}
+import { HttpResponse } from './http-response'
 
-export abstract class Controller<T, U> {
-	protected abstract handle (request: T): Promise<HttpResponse>
+export abstract class Controller<RequestData, ResponseDTO = {}> {
+	protected abstract handle(requestData: RequestData): Promise<HttpResponse>
 
-	public async handleTry(request: T) {
+	public async handleTry(requestData: RequestData): Promise<HttpResponse> {
 		try {
-			await this.handle(request)
-		} catch(e) {
+			return await this.handle(requestData)
+		} catch (e) {
 			return this.fail(e)
 		}
 	}
 
-	protected ok<T>(dto?: U): HttpResponse {
+	protected ok(dto?: ResponseDTO): HttpResponse {
 		return {
 			statusCode: 200,
-			body: {
-				data: dto
-			}
+			body: dto
 		}
 	}
 
-	protected created(dto?: U): HttpResponse {
+	protected created(dto?: ResponseDTO): HttpResponse {
 		return {
 			statusCode: 201,
 			body: dto
