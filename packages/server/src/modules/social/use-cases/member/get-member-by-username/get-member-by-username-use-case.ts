@@ -6,23 +6,23 @@ import { Member } from 'modules/social/domain/member/member'
 import { IMemberRepository } from 'modules/social/repositories/member-repository'
 import { NotFoundError } from 'shared/errors/not-found-error'
 
-type UseCaseRequest = {
+type Input = {
 	username: string
 }
 
-type UseCaseResponse = Promise<Either<NotFoundError, Member>>
+type Output = Either<NotFoundError, Member>
 
-export class GetMemberByUsernameUseCase implements UseCase<UseCaseRequest, UseCaseResponse> {
+export class GetMemberByUsernameUseCase implements UseCase<Input, Output> {
 	constructor(private memberRepository: IMemberRepository) {}
 
-	async execute({ username }: UseCaseRequest): UseCaseResponse {
-        const member = await this.memberRepository.findByUsername(username)
-        const memberNotFound = !member
+	async execute({ username }: Input): Promise<Output> {
+		const member = await this.memberRepository.findByUsername(username)
+		const memberNotFound = !member
 
-        if(memberNotFound) {
-            return left(new NotFoundError('Member', username))
-        }
+		if (memberNotFound) {
+			return left(new NotFoundError('Member', username))
+		}
 
-        return right(member)
-    }
+		return right(member)
+	}
 }

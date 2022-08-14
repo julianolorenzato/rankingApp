@@ -5,13 +5,13 @@ import { Either, left } from 'shared/logic/either'
 import { IMemberRepository } from '../../../repositories/member-repository'
 import { AlreadyExistsError } from 'shared/errors/already-exists-error'
 
-type UseCaseRequest = {
+type Input = {
 	userId: string
 }
 
-type UseCaseResponse = Either<AlreadyExistsError, void>
+type Output = Either<AlreadyExistsError, void>
 
-export class CreateMemberUseCase implements UseCase<UseCaseRequest, UseCaseResponse> {
+export class CreateMemberUseCase implements UseCase<Input, Output> {
 	private memberRepository: IMemberRepository
 	private userRepository: IUserRepository
 
@@ -20,7 +20,7 @@ export class CreateMemberUseCase implements UseCase<UseCaseRequest, UseCaseRespo
 		this.userRepository = usersRepo
 	}
 
-	async execute(data: UseCaseRequest): Promise<UseCaseResponse> {
+	async execute(data: Input): Promise<Output> {
 		const { userId } = data
 
 		const user = await this.userRepository.findById(userId)
