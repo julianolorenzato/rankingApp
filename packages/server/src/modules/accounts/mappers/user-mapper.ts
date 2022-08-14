@@ -12,7 +12,7 @@ interface PersistenceUser {
 	// updatedAt: Date
 }
 
-export class UserMapper implements Mapper<User, PersistenceUser, UserDTO> {
+class UserMapperClass implements  Mapper<User, PersistenceUser, UserDTO> {
 	toDomain(rawData: PersistenceUser): User | Error {
 		const { id, username, email, password, createdAt } = rawData
 
@@ -55,3 +55,7 @@ export class UserMapper implements Mapper<User, PersistenceUser, UserDTO> {
 		}
 	}
 }
+
+const UserMapper = new UserMapperClass()
+
+export { UserMapper }
