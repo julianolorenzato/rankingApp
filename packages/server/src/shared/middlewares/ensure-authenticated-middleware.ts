@@ -21,7 +21,9 @@ class EnsureAuthenticatedMiddleware extends Middleware<any> {
         const jwt = JWT.verifyUserToken(accessToken)
     
         if (jwt.isRight()) {
-            return this.ok(accessToken)
+            const { payload } = jwt.value
+
+            return this.ok(payload)
         } else {
             return this.unauthorized(new UnauthorizedError())
         }

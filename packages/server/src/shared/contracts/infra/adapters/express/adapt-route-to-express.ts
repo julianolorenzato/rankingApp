@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { Controller } from '../../../contracts/infra/controller'
+import { Controller } from '../../controller'
 
 export const adaptRoute = (controller: Controller<any, any>) => {
 	return async (req: Request, res: Response) => {
