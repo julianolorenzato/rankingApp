@@ -2,17 +2,13 @@ import { Member } from 'modules/social/domain/member/member'
 import { IMemberRepository } from 'modules/social/repositories/member-repository'
 import { UseCase } from 'shared/contracts/application/use-case'
 
-type Input = {
-	amount: number
-}
-
 type Output = Member[]
 
-export class GetMembersUseCase implements UseCase<Input, Output> {
+export class GetMembersUseCase implements UseCase<null, Output> {
 	constructor(private membersRepository: IMemberRepository) {}
 
-	async execute({ amount }: Input): Promise<Output> {
-		const members = await this.membersRepository.findAll(amount)
+	async execute(): Promise<Output> {
+		const members = await this.membersRepository.findAll()
 
 		return members
 	}

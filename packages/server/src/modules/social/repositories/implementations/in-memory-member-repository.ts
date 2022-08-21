@@ -4,7 +4,7 @@ import { IMemberRepository } from '../member-repository'
 class InMemoryMemberRepository implements IMemberRepository {
 	public items: Member[] = []
 
-	async findAll(amount: number): Promise<Member[] | null> {
+	async findAll(): Promise<Member[] | null> {
 		const members = this.items
 		if (!members) {
 			return null

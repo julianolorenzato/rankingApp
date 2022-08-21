@@ -9,14 +9,10 @@ import { adaptRoute } from 'shared/contracts/infra/adapters/express/adapt-route-
 
 const membersRouter = Router()
 
-membersRouter.get('/', (req, res) => {
-	return getMembersController.handle(req, res)
-})
+membersRouter.use(adaptMiddleware(ensureAuthenticatedMiddleware))
 
-membersRouter.get('/me', adaptMiddleware(ensureAuthenticatedMiddleware), adaptRoute(getCurrentMemberController))
-
-membersRouter.get('/:username', (req, res) => {
-	return getMemberByUsernameController.handle(req, res)
-})
+membersRouter.get('/', adaptRoute(getMembersController))
+membersRouter.get('/me', adaptRoute(getCurrentMemberController))
+membersRouter.get('/:username', adaptRoute(getMemberByUsernameController))
 
 export { membersRouter }
