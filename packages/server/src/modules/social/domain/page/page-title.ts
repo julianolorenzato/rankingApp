@@ -1,4 +1,4 @@
-import { ValueObject } from 'base/domain/value-object'
+import { ValueObject } from 'shared/contracts/domain/value-object'
 import { InvalidLengthError } from 'shared/errors/invalid-length-error'
 import { Either, left, right } from 'shared/logic/either'
 
@@ -12,6 +12,10 @@ export class PageTitle extends ValueObject<IPageTitleProps> {
 
 	private constructor(props: IPageTitleProps) {
 		super(props)
+	}
+
+	get value(): string {
+		return this.props.value
 	}
 
 	private static validate(value: string): boolean {

@@ -1,4 +1,4 @@
-import { ValueObject } from 'base/domain/value-object'
+import { ValueObject } from 'shared/contracts/domain/value-object'
 import { InvalidLengthError } from 'shared/errors/invalid-length-error'
 import { Either, left, right } from 'shared/logic/either'
 
@@ -22,6 +22,10 @@ export class PageDescription extends ValueObject<IPageDescriptionProps> {
 		}
 
 		return true
+	}
+
+	get value(): string {
+		return this.props.value
 	}
 
 	static create(value: string): Either<InvalidLengthError, PageDescription> {

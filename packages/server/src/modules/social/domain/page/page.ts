@@ -1,5 +1,4 @@
 import { AggregateRoot } from 'shared/contracts/domain/aggregate-root'
-
 import { PageDescription } from './page-description'
 import { PageTitle } from './page-title'
 
@@ -18,12 +17,12 @@ export class Page extends AggregateRoot<IPageProps> {
 		super(props, id, createdAt)
 	}
 
-	get title(): string {
-		return this.props.title.props.value
+	get title(): PageTitle {
+		return this.props.title
 	}
 
-	get description(): string {
-		return this.props.description.props.value
+	get description(): PageDescription {
+		return this.props.description
 	}
 
 	get ownerId(): string {
