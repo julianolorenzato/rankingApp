@@ -57,10 +57,13 @@ export class EventsDispatcher {
 
 	private static dispatch(event: IDomainEvent): void {
 		const eventName = event.constructor.name
-		const handlers = this.eventHandlers[eventName]
+		
+		if (this.eventHandlers.hasOwnProperty(eventName)) {
+			const handlers = this.eventHandlers[eventName]
 
-		for (let handler of handlers) {
-			handler(event)
+			for (let handler of handlers) {
+				handler(event)
+			}
 		}
 	}
 
