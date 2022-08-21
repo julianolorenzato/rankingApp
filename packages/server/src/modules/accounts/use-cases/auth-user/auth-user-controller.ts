@@ -6,7 +6,11 @@ type RequestData = {
 	password: string
 }
 
-export class AuthUserController extends Controller<RequestData> {
+type Response = {
+	token: string
+}
+
+export class AuthUserController extends Controller<RequestData, Response> {
 	constructor(private authUserUseCase: AuthUserUseCase) {
 		super()
 	}
@@ -24,6 +28,6 @@ export class AuthUserController extends Controller<RequestData> {
 			return this.clientError(error)
 		}
 
-		return this.ok()
+		return this.ok(result.value)
 	}
 }
