@@ -5,7 +5,7 @@ import { Password } from './password'
 import { User } from './user'
 import { Username } from './username'
 
-describe('Aggregate - user', () => {
+describe('Aggregate root - user', () => {
 	const username = Username.create({ value: 'jakeotaku' }).value as Username
 	const email = Email.create({ value: 'iloveanimes@love.com' }).value as Email
 	const password = Password.create({ value: 'sasukeuchiha123' }).value as Password

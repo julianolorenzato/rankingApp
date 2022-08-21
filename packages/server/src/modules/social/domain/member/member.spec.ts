@@ -2,7 +2,7 @@ import { randomUUID } from "crypto"
 import { Username } from "modules/accounts/domain/user"
 import { Member } from "./member"
 
-describe('Aggregate - member', () => {
+describe('Aggregate root - member', () => {
 	const username = Username.create({ value: 'jakeotaku' }).value as Username
 
 	it('should be able to create a new member', () => {
