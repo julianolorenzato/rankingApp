@@ -1,29 +1,28 @@
 import { JWT } from 'modules/accounts/services/jwt-service'
 import { HttpResponse } from 'shared/contracts/infra/http-response'
 import { Middleware } from 'shared/contracts/infra/middleware'
-import { InvalidAccessTokenError } from 'shared/errors/invalid-access-token-error'
-import { UnauthorizedError } from 'shared/errors/unauthorized-error'
+import { AccessTokenMustBeProvidedError } from 'shared/errors/access-token-must-be-provided-error'
 
 type RequestData = {
 	accessToken: string
 }
 
-class EnsureAuthenticatedMiddleware extends Middleware<any> {
+class EnsureAuthenticatedMiddleware extends Middleware<RequestData> {
 	protected async handle(requestData: RequestData): Promise<HttpResponse> {
 		const { accessToken } = requestData
 
 		if (!accessToken) {
-			return this.unauthorized(new InvalidAccessTokenError())
+			return this.clientError(new AccessTokenMustBeProvidedError())
 		}
 
-		const jwt = JWT.verifyUserToken(accessToken)
+		const result = JWT.verifyUserToken(accessToken)
 
-		if (jwt.isRight()) {
-			const { payload } = jwt.value
+		if (result.isRight()) {
+			const { payload } = result.value
 
 			return this.ok(payload)
 		} else {
-			return this.unauthorized(new UnauthorizedError())
+			return this.unauthorized(result.value)
 		}
 	}
 }

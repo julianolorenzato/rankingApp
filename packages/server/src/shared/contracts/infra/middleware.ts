@@ -11,14 +11,23 @@ export abstract class Middleware<RequestData> {
 		}
 	}
 
-    protected ok(data: any): HttpResponse {
+    protected ok(payload: any): HttpResponse {
         return {
             statusCode: 200,
             body: {
-                data
+                payload
             }
         }
     }
+
+	protected clientError(error: Error): HttpResponse {
+		return {
+			statusCode: 400,
+			body: {
+				error: error.message
+			}
+		}
+	}
 
 	protected unauthorized(error: Error): HttpResponse {
 		return {

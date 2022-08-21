@@ -1,12 +1,11 @@
 import { Either, right, left } from 'shared/logic/either'
 
-import { JwtPayload, sign, verify } from 'jsonwebtoken'
-import { auth } from '../../../config/auth'
+import { sign, verify } from 'jsonwebtoken'
+import { auth } from 'config/auth'
 
 import { User } from '../domain/user/user'
 
-import { InvalidJWTTokenError } from './errors/invalid-jwt-token-error'
-import { AccessDeniedError } from 'modules/accounts/services/errors/access-denied-error'
+import { UnauthorizedError } from 'shared/errors/unauthorized-error'
 
 interface JWTTokenPayload {
 	userId: string
@@ -18,7 +17,7 @@ interface JWTData {
 	token: string
 }
 
-type Errors = InvalidJWTTokenError | AccessDeniedError
+// type Errors = AccessTokenMustBeProvidedError | UnauthorizedError
 
 export class JWT implements JWTData {
 	public readonly payload: JWTTokenPayload
@@ -47,11 +46,7 @@ export class JWT implements JWTData {
 		return jwt
 	}
 
-	static verifyUserToken(token?: string): Either<Errors, JWT> {
-		if (!token) {
-			return left(new InvalidJWTTokenError())
-		}
-
+	static verifyUserToken(token: string): Either<UnauthorizedError, JWT> {
 		try {
 			const decoded = verify(token, auth.secretKey) as JWTTokenPayload
 
@@ -65,7 +60,7 @@ export class JWT implements JWTData {
 
 			return right(jwt)
 		} catch (e) {
-			return left(new AccessDeniedError())
+			return left(new UnauthorizedError())
 		}
 	}
 }

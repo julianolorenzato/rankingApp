@@ -1,12 +1,17 @@
 import { Request, Response } from 'express'
 import { Controller } from '../../controller'
 
+interface RequestImproved extends Request {
+	payload: any
+}
+
 export const adaptRoute = (controller: Controller<any, any>) => {
-	return async (req: Request, res: Response) => {
+	return async (req: RequestImproved, res: Response) => {
 		const requestData = {
 			...req.body,
 			...req.params,
-			...req.query
+			...req.query,
+			payload: req.payload
 		}
 
 		const httpResponse = await controller.handleTry(requestData)

@@ -1,7 +1,7 @@
 import { InvalidLengthError } from 'shared/errors/invalid-length-error'
 import { Either } from 'shared/logic/either'
 import { Email } from './email'
-import { InvalidEmailFormatError } from './errors/invalid-email-format-error'
+import { InvalidEmailFormatError } from '../../../../shared/errors/invalid-email-format-error'
 
 describe('VO - user/email', () => {
 	it('should be able to create a new email', () => {

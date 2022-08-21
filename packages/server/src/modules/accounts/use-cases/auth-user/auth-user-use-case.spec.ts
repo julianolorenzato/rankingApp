@@ -2,7 +2,7 @@ import { InMemoryUserRepository } from "modules/accounts/repositories/in-memory/
 import { IUserRepository } from "modules/accounts/repositories/user-repository"
 import { RegisterUserUseCase } from "../register-user/register-user-use-case"
 import { AuthUserUseCase, TokenResponse } from "./auth-user-use-case"
-import { InvalidEmailOrPasswordError } from "./errors/invalid-email-or-password-error"
+import { InvalidEmailOrPasswordError } from "../../../../shared/errors/invalid-email-or-password-error"
 
 describe('UseCase - AuthUser', () => {
     let userRepository: IUserRepository

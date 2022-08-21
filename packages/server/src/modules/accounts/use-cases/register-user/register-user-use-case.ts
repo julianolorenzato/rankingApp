@@ -5,7 +5,7 @@ import { User, Username, Email, Password } from 'modules/accounts/domain/user'
 
 import { IUserRepository } from '../../repositories/user-repository'
 
-import { InvalidEmailFormatError } from 'modules/accounts/domain/user/errors/invalid-email-format-error'
+import { InvalidEmailFormatError } from 'shared/errors/invalid-email-format-error'
 import { InvalidLengthError } from 'shared/errors/invalid-length-error'
 import { EventsDispatcher } from 'shared/events/events-dispatcher'
 import { AlreadyExistsError } from 'shared/errors/already-exists-error'

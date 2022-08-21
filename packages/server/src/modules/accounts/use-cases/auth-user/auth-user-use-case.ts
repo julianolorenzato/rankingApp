@@ -2,7 +2,7 @@ import { User } from 'modules/accounts/domain/user'
 import { JWT } from 'modules/accounts/services/jwt-service'
 import { Either, left, right } from 'shared/logic/either'
 import { IUserRepository } from '../../repositories/user-repository'
-import { InvalidEmailOrPasswordError } from './errors/invalid-email-or-password-error'
+import { InvalidEmailOrPasswordError } from '../../../../shared/errors/invalid-email-or-password-error'
 
 export type TokenResponse = {
 	token: string
