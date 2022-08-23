@@ -1,4 +1,4 @@
-type FieldTypes = 'username' | 'email' | 'password' | 'page title' | 'page description'
+type FieldTypes = 'username' | 'email' | 'password' | 'page title' | 'page description' | 'poll option name'
 
 export class InvalidLengthError extends Error {
 	constructor(field: FieldTypes, value?: string) {

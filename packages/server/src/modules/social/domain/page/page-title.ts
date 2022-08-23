@@ -28,7 +28,7 @@ export class PageTitle extends ValueObject<IPageTitleProps> {
 		return true
 	}
 
-	static create(value: string): Either<InvalidLengthError, PageTitle> {
+	static create({ value }: IPageTitleProps): Either<InvalidLengthError, PageTitle> {
         const isValid = this.validate(value)
 
         if(isValid) {
