@@ -28,7 +28,7 @@ export class PageDescription extends ValueObject<IPageDescriptionProps> {
 		return this.props.value
 	}
 
-	static create(value: string): Either<InvalidLengthError, PageDescription> {
+	static create({ value }: IPageDescriptionProps): Either<InvalidLengthError, PageDescription> {
         const isValid = this.validate(value)
 
         if(isValid) {

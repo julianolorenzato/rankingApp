@@ -1,5 +1,4 @@
 import { InvalidLengthError } from 'shared/errors/invalid-length-error'
-import { Either } from 'shared/logic/either'
 import { Email } from './email'
 import { InvalidEmailFormatError } from '../../../../shared/errors/invalid-email-format-error'
 
