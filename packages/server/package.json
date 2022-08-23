@@ -8,7 +8,7 @@
     "start": "tsnd -r tsconfig-paths/register src/infra/http/express/server.ts",
     "build": "tsc",
     "test": "jest --watchAll --noStackTrace --silent --detectOpenHandles",
-    "test:logs": "jest --watchAll --verbose --detectOpenHandles"
+    "test:logs": "jest --watchAll --verbose --noStackTrace --detectOpenHandles"
   },
   "keywords": [],
   "author": "",

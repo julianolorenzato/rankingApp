@@ -1,11 +1,11 @@
 import { Entity } from 'shared/contracts/domain/entity'
 import { NotFoundError } from 'shared/errors/not-found-error'
-import { Either, left } from 'shared/logic/either'
-
-type Option = {
-	name: string
-	votes: number
-}
+import { Either, left, right } from 'shared/logic/either'
+import { Member } from '../../member/member'
+import { MemberId } from '../../member/member-id'
+import { PageId } from '../page/page-id'
+import { Option } from './option'
+import { OptionVote } from './option-vote'
 
 type Results = {
 	name: string
@@ -15,6 +15,8 @@ type Results = {
 export interface IPollProps {
 	title: string
 	options: Option[]
+	owner: MemberId
+	pageId: PageId
 }
 
 export class Poll extends Entity<IPollProps> {
@@ -31,33 +33,21 @@ export class Poll extends Entity<IPollProps> {
 	}
 
 	get results(): Results {
-		const totalVotes = this.options.reduce((acc, option) => acc + option.votes, 0)
+		const totalVotes = this.options.reduce((acc, option) => acc + option.votes.length, 0)
 
 		const results = this.options.map(({ name, votes }) => ({
 			name,
-			percentage: (votes / totalVotes) * 100
+			percentage: (votes.length / totalVotes) * 100
 		}))
 
 		return results
 	}
 
-	vote(optionName: string): Either<NotFoundError, void> {
-		const option = this.options.find(opt => opt.name === optionName)
-		
-		if(!option) {
-			return left(new NotFoundError('option', optionName))
-		}
-
-		option.votes += 1
+	addOption(option: Option): void {
+		this.options.push(option)
 	}
 
 	static create(props: IPollProps, id?: string, createdAt?: Date) {
-		const isNew = !id
-
-		const newOptions = props.options.map(opt => ({ ...opt, votes: 0 }))
-
-		props.options = isNew ? newOptions : props.options
-
 		const poll = new Poll(props, id, createdAt)
 		return poll
 	}

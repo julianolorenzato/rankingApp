@@ -1,15 +1,15 @@
 import { AggregateRoot } from 'shared/contracts/domain/aggregate-root'
+import { MemberId } from '../../member/member-id'
+import { Poll } from '../poll/poll'
 import { PageDescription } from './page-description'
 import { PageTitle } from './page-title'
-
-type MemberId = string
 
 interface IPageProps {
 	title: PageTitle
 	description: PageDescription
 	ownerId: MemberId
 	followerIds?: MemberId[]
-	//polls: Poll[]
+	polls: Poll[]
 }
 
 export class Page extends AggregateRoot<IPageProps> {
