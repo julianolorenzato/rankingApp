@@ -1,4 +1,5 @@
 import { Entity } from 'shared/contracts/domain/entity'
+import { AlreadyExistsError } from 'shared/errors/already-exists-error'
 import { NotFoundError } from 'shared/errors/not-found-error'
 import { Either, left, right } from 'shared/logic/either'
 import { Member } from '../../member/member'
@@ -32,18 +33,24 @@ export class Poll extends Entity<IPollProps> {
 		return this.props.options
 	}
 
-	get results(): Results {
+	showResults(): Results {
 		const totalVotes = this.options.reduce((acc, option) => acc + option.votes.length, 0)
 
 		const results = this.options.map(({ name, votes }) => ({
 			name,
-			percentage: (votes.length / totalVotes) * 100
+			percentage: +((votes.length / totalVotes) * 100).toFixed(1)
 		}))
 
 		return results
 	}
 
-	addOption(option: Option): void {
+	addOption(option: Option): Either<AlreadyExistsError, void> {
+		const alreadyExists = this.options.find(opt => opt.name === option.name)
+
+		if (alreadyExists) {
+			return left(new AlreadyExistsError('option name', option.name))
+		}
+
 		this.options.push(option)
 	}
 
