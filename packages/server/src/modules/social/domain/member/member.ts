@@ -16,6 +16,10 @@ export class Member extends AggregateRoot<IMemberProps> {
 		return this.props.username
 	}
 
+	get reputation(): number {
+		return this.props.reputation
+	}
+
 	static create(props: IMemberProps, id?: string, createdAt?: Date): Member {
 		const isNewMember = !id
 

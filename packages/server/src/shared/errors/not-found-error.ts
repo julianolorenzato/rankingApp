@@ -1,4 +1,4 @@
-type FieldTypes = 'Member' | 'option'
+type FieldTypes = 'Member' | 'Option'
 
 export class NotFoundError extends Error {
 	constructor(field: FieldTypes, value: string) {

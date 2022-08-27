@@ -1,23 +1,15 @@
 import { randomUUID } from 'crypto'
 
 export abstract class Entity<T> {
-	protected _id: string
-    protected _createdAt: Date
-    public props: T
+	public readonly id: string
+    public readonly createdAt: Date
+    protected props: T
 
 	constructor(props: T, id?: string, createdAt?: Date) {
         this.props = props
-        this._createdAt = createdAt ?? new Date()
-		this._id = id ?? randomUUID()
+        this.createdAt = createdAt ?? new Date()
+		this.id = id ?? randomUUID()
 	}
-
-    get id() {
-        return this._id
-    }
-
-    get createdAt() {
-        return this._createdAt
-    }
 
     public equals(object?: Entity<T>): boolean {
         if(object === null || object === undefined) {

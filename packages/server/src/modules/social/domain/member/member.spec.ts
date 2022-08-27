@@ -12,9 +12,12 @@ describe('Aggregate root - member', () => {
             reputation: 7
         })
 
+        expect(member).toBeInstanceOf(Member)
+
 		expect(member).toHaveProperty('id')
 		expect(member).toHaveProperty('createdAt')
-        expect(member.props).toHaveProperty('reputation', 0)
+        expect(member).toHaveProperty('username', username)
+        expect(member).toHaveProperty('reputation', 0)
 	})
 
     it('should be able to create an existing member passing the id', () => {
@@ -26,8 +29,11 @@ describe('Aggregate root - member', () => {
             reputation: 12
 		}, fakeId)
 
+        expect(existingMember).toBeInstanceOf(Member)
+
         expect(existingMember).toHaveProperty('id')
         expect(existingMember).toHaveProperty('createdAt')
-        expect(existingMember.props).toHaveProperty('reputation', 12)
+        expect(existingMember).toHaveProperty('username', username)
+        expect(existingMember).toHaveProperty('reputation', 12)
     })
 })
