@@ -19,7 +19,7 @@ describe('VO - poll/poll-title', () => {
 		const shortPollTitle = PollTitle.create({ value: shortValue })
 
 		expect(shortPollTitle.value).toBeInstanceOf(InvalidLengthError)
-		expect(shortPollTitle.value).toStrictEqual(new InvalidLengthError('page description', shortValue))
+		expect(shortPollTitle.value).toStrictEqual(new InvalidLengthError('poll title', shortValue))
 	})
 
 	it('should not be able to create a PollTitle with more than 80 chars', () => {
@@ -27,6 +27,6 @@ describe('VO - poll/poll-title', () => {
 		const longPollTitle = PollTitle.create({ value: longValue })
 
 		expect(longPollTitle.value).toBeInstanceOf(InvalidLengthError)
-		expect(longPollTitle.value).toStrictEqual(new InvalidLengthError('page description', longValue))
+		expect(longPollTitle.value).toStrictEqual(new InvalidLengthError('poll title', longValue))
 	})
 })
