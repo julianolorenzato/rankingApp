@@ -5,6 +5,7 @@ import { PollAlreadyFinishedError } from 'shared/errors/poll-already-finished-er
 import { Option } from './option'
 import { OptionVote } from './option-vote'
 import { IPollProps, Poll } from './poll'
+import { PollTitle } from './poll-title'
 
 describe('Entity - poll', () => {
 	let votes: OptionVote[]
@@ -12,6 +13,7 @@ describe('Entity - poll', () => {
 	let option2: Option
 	let option3: Option
 	let option4: Option
+	let pollTitle: PollTitle
 	let pollProps: IPollProps
 	let poll: Poll
 	let finishedPoll: Poll
@@ -65,8 +67,10 @@ describe('Entity - poll', () => {
 			new Date()
 		).value as Option
 
+		pollTitle = PollTitle.create({ value: 'Which is the Valorant best gun' }).value as PollTitle
+
 		pollProps = {
-			title: 'Which is the Valorant best gun',
+			title: pollTitle,
 			options: [option1, option2, option3, option4],
 			owner: randomUUID(),
 			pageId: randomUUID(),

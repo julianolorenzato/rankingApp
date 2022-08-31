@@ -3,10 +3,11 @@ import { AlreadyExistsError } from 'shared/errors/already-exists-error'
 import { NotFoundError } from 'shared/errors/not-found-error'
 import { PollAlreadyFinishedError } from 'shared/errors/poll-already-finished-error'
 import { Either, left, right } from 'shared/logic/either'
-import { MemberId } from '../../member/member-id'
+import { MemberId } from '../member/member-id'
 import { PageId } from '../page/page-id'
 import { Option } from './option'
 import { OptionVote } from './option-vote'
+import { PollTitle } from './poll-title'
 
 type AddOptionErrors = PollAlreadyFinishedError | AlreadyExistsError
 type VoteErrors = PollAlreadyFinishedError | NotFoundError
@@ -27,7 +28,7 @@ type Temporary = {
 }
 
 export interface IPollProps {
-	title: string
+	title: PollTitle
 	options: Option[]
 	owner: MemberId
 	pageId: PageId
@@ -39,7 +40,7 @@ export class Poll extends Entity<IPollProps> {
 		super(props, id, createdAt)
 	}
 
-	get title(): string {
+	get title(): PollTitle {
 		return this.props.title
 	}
 
@@ -53,7 +54,7 @@ export class Poll extends Entity<IPollProps> {
 
 	vote(optionId: string, vote: OptionVote): Either<VoteErrors, void> {
 		if(this.isFinished()) {
-			return left(new PollAlreadyFinishedError(this.title))
+			return left(new PollAlreadyFinishedError(this.title.value))
 		}
 
 		const option = this.options.find(opt => opt.id === optionId)
@@ -89,7 +90,7 @@ export class Poll extends Entity<IPollProps> {
 
 	addOption(option: Option): Either<AddOptionErrors, void> {
 		if(this.isFinished()) {
-			return left(new PollAlreadyFinishedError(this.title))
+			return left(new PollAlreadyFinishedError(this.title.value))
 		}
 
 		const alreadyExists = this.options.find(opt => opt.name === option.name)

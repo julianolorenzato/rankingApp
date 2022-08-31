@@ -1,5 +1,5 @@
 import { Entity } from 'shared/contracts/domain/entity'
-import { MemberId } from '../../member/member-id'
+import { MemberId } from '../member/member-id'
 import { OptionId } from './option-id'
 import { PollId } from './poll-id'
 

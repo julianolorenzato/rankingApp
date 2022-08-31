@@ -1,5 +1,5 @@
 import { AggregateRoot } from 'shared/contracts/domain/aggregate-root'
-import { MemberId } from '../../member/member-id'
+import { MemberId } from '../member/member-id'
 import { Poll } from '../poll/poll'
 import { PageDescription } from './page-description'
 import { PageTitle } from './page-title'
