@@ -35,6 +35,6 @@ export class PollTitle extends ValueObject<IPollTitleProps> {
             return right(new PollTitle({ value }))
         }
 
-        return left(new InvalidLengthError('page description', value))
+        return left(new InvalidLengthError('poll title', value))
     }
 }
