@@ -1,7 +1,7 @@
 import { InvalidLengthError } from "shared/errors/invalid-length-error"
 import { PollTitle } from './poll-title'
 
-describe('VO - page/page-description', () => {
+describe('VO - poll/poll-title', () => {
     it('should ble able to create a new PageDescription', () => {
 		const testValue = 'Some cool description'
 		const pollTitle = PollTitle.create({ value: testValue })
