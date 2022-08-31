@@ -2,8 +2,8 @@ import { InvalidLengthError } from "shared/errors/invalid-length-error"
 import { PollTitle } from './poll-title'
 
 describe('VO - poll/poll-title', () => {
-    it('should ble able to create a new PageDescription', () => {
-		const testValue = 'Some cool description'
+    it('should ble able to create a new PollTitle', () => {
+		const testValue = 'Some cool title'
 		const pollTitle = PollTitle.create({ value: testValue })
 
 		expect(pollTitle.value).toBeInstanceOf(PollTitle)
