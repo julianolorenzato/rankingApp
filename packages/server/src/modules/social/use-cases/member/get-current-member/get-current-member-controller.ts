@@ -28,9 +28,9 @@ export class GetCurrentMemberController extends Controller<RequestData, Response
 
 		const response: IMemberDTO = {
 			id: result.value.id,
-			userId: result.value.props.userId,
+			userId: result.value.userId,
 			username: result.value.username.value,
-			reputation: result.value.props.reputation,
+			reputation: result.value.reputation,
 			createdAt: result.value.createdAt
 		}
 

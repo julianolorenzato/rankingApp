@@ -12,9 +12,9 @@ export class GetMembersController extends Controller<null, IMemberDTO[]> {
 
 		const response: IMemberDTO[] = result.map(member => ({
 			id: member.id,
-			userId: member.props.userId,
-			username: member.props.username.value,
-			reputation: member.props.reputation,
+			userId: member.userId,
+			username: member.username.value,
+			reputation: member.reputation,
 			createdAt: member.createdAt
 		}))
 

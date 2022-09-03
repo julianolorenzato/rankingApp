@@ -2,6 +2,7 @@ import { RegisterUserUseCase } from './register-user-use-case'
 // import { Request, Response } from 'express'
 import { UserDTO } from 'modules/accounts/dtos/user-dto'
 import { Controller } from 'shared/contracts/infra/controller'
+import { HttpResponse } from 'shared/contracts/infra/http-response'
 
 type RequestData = {
 	username: string
@@ -16,7 +17,7 @@ export class RegisterUserController extends Controller<RequestData, ResponseDTO>
 		super()
 	}
 
-	protected async handle(requestData: RequestData) {
+	protected async handle(requestData: RequestData): Promise<HttpResponse> {
 		const { username, email, password } = requestData
 
 		const output = await this.registerUserUseCase.execute({

@@ -14,6 +14,18 @@ export class OptionVote extends Entity<IOptionVoteProps> {
 		super(props, id, createdAt)
 	}
 
+	get owner(): string {
+		return this.props.owner
+	}
+
+	get pollId(): string {
+		return this.props.pollId
+	}
+
+	get optionId(): string {
+		return this.props.optionId
+	}
+
 	static create(props: IOptionVoteProps, id?: string, createdAt?: Date): OptionVote {
 		const optionVote = new OptionVote(props, id, createdAt)
 		return optionVote

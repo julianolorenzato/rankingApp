@@ -24,7 +24,6 @@ type Permanent = {
 type Temporary = {
 	type: 'temporary'
 	endDate: Date
-	// readonly finished: boolean
 }
 
 export interface IPollProps {
@@ -44,8 +43,16 @@ export class Poll extends Entity<IPollProps> {
 		return this.props.title
 	}
 
+	get owner(): string {
+		return this.props.owner
+	}
+
 	get options(): Option[] {
 		return this.props.options
+	}
+
+	get pageId(): string {
+		return this.props.pageId
 	}
 
 	get duration() {

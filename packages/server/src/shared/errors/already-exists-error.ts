@@ -1,4 +1,4 @@
-type FieldTypes = 'username' | 'email' | 'page title' | 'member' | 'option name'
+type FieldTypes = 'username' | 'email' | 'page title' | 'member' | 'option name' | 'poll'
 
 export class AlreadyExistsError extends Error {
 	constructor(field: FieldTypes, value: string) {

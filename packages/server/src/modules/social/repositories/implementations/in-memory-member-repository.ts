@@ -23,7 +23,7 @@ class InMemoryMemberRepository implements IMemberRepository {
 	}
 
 	async findByUserId(id: string): Promise<Member | null> {
-		const member = this.items.find(member => member.props.userId === id)
+		const member = this.items.find(member => member.userId === id)
 		if (!member) {
 			return null
 		}
