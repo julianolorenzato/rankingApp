@@ -21,8 +21,12 @@ Each `User` have a `UserRole`
 -----
 Usar classe guard talvez?
 
-Fazer validation no controller
+Fazer validation na classe controller para todos os controllers terem
+
+Fazer usecase na classe controller para todos os controllers terem
 
 Ver onde fica o dto (input e output de usecases ou na resposta do controller)
 
 Events para adicionar coisas ao feed talvez???
+
+Criar sut factories para todas as entities e aggregate roots, assim como alterar os testes dos mesmos para usar essas sut factories
