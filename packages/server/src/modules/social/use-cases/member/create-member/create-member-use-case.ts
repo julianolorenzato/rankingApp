@@ -12,13 +12,7 @@ type Input = {
 type Output = Either<AlreadyExistsError, void>
 
 export class CreateMemberUseCase implements UseCase<Input, Output> {
-	private memberRepository: IMemberRepository
-	private userRepository: IUserRepository
-
-	constructor(memberRepo: IMemberRepository, usersRepo: IUserRepository) {
-		this.memberRepository = memberRepo
-		this.userRepository = usersRepo
-	}
+	constructor(private memberRepository: IMemberRepository, private userRepository: IUserRepository) {}
 
 	async execute(data: Input): Promise<Output> {
 		const { userId } = data
@@ -36,6 +30,6 @@ export class CreateMemberUseCase implements UseCase<Input, Output> {
 			return left(new AlreadyExistsError('member', `of id ${member.id}`))
 		}
 
-        await this.memberRepository.save(member)
+		await this.memberRepository.save(member)
 	}
 }

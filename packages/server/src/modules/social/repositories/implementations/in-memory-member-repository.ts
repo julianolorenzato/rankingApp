@@ -1,7 +1,7 @@
 import { Member } from 'modules/social/domain/member/member'
 import { IMemberRepository } from '../member-repository'
 
-class InMemoryMemberRepository implements IMemberRepository {
+export class InMemoryMemberRepository implements IMemberRepository {
 	public items: Member[] = []
 
 	async findAll(): Promise<Member[] | null> {

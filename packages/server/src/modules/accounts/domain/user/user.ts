@@ -5,7 +5,7 @@ import { Email } from './email'
 import { Password } from './password'
 import { UserRegistered } from './events/user-registered'
 
-interface IUserProps {
+export interface IUserProps {
 	username: Username
 	email: Email
 	password: Password

@@ -3,7 +3,7 @@ import { ValueObject } from 'shared/contracts/domain/value-object'
 
 import { InvalidLengthError } from '../../../../shared/errors/invalid-length-error'
 
-interface IUsernameProps {
+export interface IUsernameProps {
 	value: string
 }
 
