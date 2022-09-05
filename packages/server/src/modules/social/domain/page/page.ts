@@ -9,7 +9,7 @@ import { Poll } from '../poll/poll'
 import { PageDescription } from './page-description'
 import { PageTitle } from './page-title'
 
-interface IPageProps {
+export interface IPageProps {
 	title: PageTitle
 	description: PageDescription
 	owner: MemberId
@@ -59,12 +59,12 @@ export class Page extends AggregateRoot<IPageProps> {
 	removePoll(pollId: string, memberId: string): Either<NotFoundError | Error, void> {
 		const poll = this.props.polls.find(p => p.id === pollId)
 
-		if (poll.owner !== memberId) {
-			return left(new Error('for remove a poll you must be its owner'))
-		}
-
 		if (!poll) {
 			return left(new NotFoundError('Poll', pollId))
+		}
+
+		if (poll.owner !== memberId) {
+			return left(new Error('for remove a poll you must be its owner'))
 		}
 
 		this.props.polls = this.props.polls.filter(p => p.id !== pollId)
@@ -73,7 +73,7 @@ export class Page extends AggregateRoot<IPageProps> {
 	static create(props: IPageProps, id?: string, createdAt?: Date): Page {
 		const isNewPage = !id
 
-		const pageProps: IPageProps = isNewPage ? { ...props, followers: [] } : props
+		const pageProps: IPageProps = isNewPage ? { ...props, followers: [], polls: [] } : props
 
 		return new Page(pageProps, id, createdAt)
 	}

@@ -11,18 +11,18 @@ import { PageDescription } from 'modules/social/domain/page/page-description'
 
 type Errors = InvalidLengthError | AlreadyExistsError
 
-type UseCaseRequest = {
+type Input = {
 	owner: string
 	pageTitle: string
 	pageDescription: string
 }
 
-type UseCaseResponse = Either<Errors, Page>
+type Output = Either<Errors, Page>
 
-export class CreatePageUseCase implements UseCase<UseCaseRequest, UseCaseResponse> {
+export class CreatePageUseCase implements UseCase<Input, Output> {
 	constructor(private pageRepository: IPageRepository) {}
 
-	async execute(data: UseCaseRequest): Promise<UseCaseResponse> {
+	async execute(data: Input): Promise<Output> {
 		const { pageTitle, pageDescription, owner } = data
 
 		const pageTitleOrError = PageTitle.create({ value: pageTitle })

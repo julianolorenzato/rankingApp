@@ -4,6 +4,14 @@ import { IPageRepository } from "../page-repository";
 class InMemoryPageRepository implements IPageRepository {
     public items: Page[] = []
 
+    async findById(pageId: string): Promise<Page | null> {
+        const page = this.items.find(page => page.id === pageId)
+
+        if(!page) return null
+
+        return page
+    }
+
     async findByTitle(title: string): Promise<Page | null> {
         const page = this.items.find(page => page.title.value === title)
 
@@ -13,10 +21,11 @@ class InMemoryPageRepository implements IPageRepository {
     }
 
     async save(page: Page): Promise<void> {
+        this.items = this.items.filter(pg => pg.id !== page.id)
         this.items.push(page)
     }
 }
 
-const inMemoryPageRepository = new InMemoryPageRepository()
+const inMemoryPageRepositoryInstance = new InMemoryPageRepository()
 
-export { inMemoryPageRepository }
+export { inMemoryPageRepositoryInstance }

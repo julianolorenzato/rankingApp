@@ -1,3 +1,4 @@
+import { AggregateRoot } from 'shared/contracts/domain/aggregate-root'
 import { Entity } from 'shared/contracts/domain/entity'
 import { AlreadyExistsError } from 'shared/errors/already-exists-error'
 import { NotFoundError } from 'shared/errors/not-found-error'
@@ -26,15 +27,17 @@ type Temporary = {
 	endDate: Date
 }
 
+export type Duration = Permanent | Temporary
+
 export interface IPollProps {
 	title: PollTitle
 	options: Option[]
 	owner: MemberId
 	pageId: PageId
-	duration: Permanent | Temporary
+	duration: Duration
 }
 
-export class Poll extends Entity<IPollProps> {
+export class Poll extends AggregateRoot<IPollProps> {
 	private constructor(props: IPollProps, id?: string, createdAt?: Date) {
 		super(props, id, createdAt)
 	}
@@ -60,13 +63,13 @@ export class Poll extends Entity<IPollProps> {
 	}
 
 	vote(optionId: string, vote: OptionVote): Either<VoteErrors, void> {
-		if(this.isFinished()) {
+		if (this.isFinished()) {
 			return left(new PollAlreadyFinishedError(this.title.value))
 		}
 
 		const option = this.options.find(opt => opt.id === optionId)
 
-		if(!option) {
+		if (!option) {
 			return left(new NotFoundError('Option', optionId))
 		}
 
@@ -74,7 +77,7 @@ export class Poll extends Entity<IPollProps> {
 	}
 
 	isFinished(): boolean {
-		if(this.duration.type === 'temporary') {
+		if (this.duration.type === 'temporary') {
 			const today = new Date()
 			// today.setHours(0, 0, 0, 0)
 
@@ -96,7 +99,7 @@ export class Poll extends Entity<IPollProps> {
 	}
 
 	addOption(option: Option): Either<AddOptionErrors, void> {
-		if(this.isFinished()) {
+		if (this.isFinished()) {
 			return left(new PollAlreadyFinishedError(this.title.value))
 		}
 
@@ -109,7 +112,7 @@ export class Poll extends Entity<IPollProps> {
 		this.options.push(option)
 	}
 
-	static create(props: IPollProps, id?: string, createdAt?: Date) {
+	static create(props: IPollProps, id?: string, createdAt?: Date): Poll {
 		const poll = new Poll(props, id, createdAt)
 		return poll
 	}

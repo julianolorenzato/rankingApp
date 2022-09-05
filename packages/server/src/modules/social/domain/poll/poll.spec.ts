@@ -7,7 +7,7 @@ import { OptionVote } from './option-vote'
 import { IPollProps, Poll } from './poll'
 import { PollTitle } from './poll-title'
 
-describe('Entity - poll', () => {
+describe('Agreggate root - poll', () => {
 	let votes: OptionVote[]
 	let option1: Option
 	let option2: Option

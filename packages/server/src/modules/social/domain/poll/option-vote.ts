@@ -3,7 +3,7 @@ import { MemberId } from '../member/member-id'
 import { OptionId } from './option-id'
 import { PollId } from './poll-id'
 
-interface IOptionVoteProps {
+export interface IOptionVoteProps {
 	owner: MemberId
 	pollId: PollId
 	optionId: OptionId

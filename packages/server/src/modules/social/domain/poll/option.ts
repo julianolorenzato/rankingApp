@@ -3,7 +3,7 @@ import { InvalidLengthError } from 'shared/errors/invalid-length-error'
 import { Either, left, right } from 'shared/logic/either'
 import { OptionVote } from './option-vote'
 
-interface IOptionProps {
+export interface IOptionProps {
 	name: string
 	votes: OptionVote[]
 }

@@ -32,8 +32,9 @@ class InMemoryMemberRepository implements IMemberRepository {
 	}
 
 	async save(member: Member): Promise<void> {
+		this.items = this.items.filter(mem => mem.id !== member.id)
 		this.items.push(member)
 	}
 }
 
-export const inMemoryMembersRepositoryInstance = new InMemoryMemberRepository()
+export const inMemoryMemberRepositoryInstance = new InMemoryMemberRepository()

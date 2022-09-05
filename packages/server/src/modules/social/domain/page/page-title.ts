@@ -2,7 +2,7 @@ import { ValueObject } from 'shared/contracts/domain/value-object'
 import { InvalidLengthError } from 'shared/errors/invalid-length-error'
 import { Either, left, right } from 'shared/logic/either'
 
-interface IPageTitleProps {
+export interface IPageTitleProps {
 	value: string
 }
 
