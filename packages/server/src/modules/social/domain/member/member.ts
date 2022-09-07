@@ -1,7 +1,7 @@
 import { Username } from 'modules/accounts/domain/user'
 import { AggregateRoot } from 'shared/contracts/domain/aggregate-root'
 
-interface IMemberProps {
+export interface IMemberProps {
 	userId: string
 	username: Username
 	reputation?: number
