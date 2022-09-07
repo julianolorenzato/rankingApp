@@ -1,37 +1,23 @@
 import { IPageDTO } from 'modules/social/dtos/page-dto'
 import { Controller } from 'shared/contracts/infra/controller'
 import { HttpResponse } from 'shared/contracts/infra/http-response'
-import { CreatePageUseCase } from './create-page-use-case'
+import { GetPageByIdUseCase } from './get-page-by-id-use-case'
 
 type RequestData = {
-	title: string
-	description: string
-	payload: {
-		userId: string
-	}
+	id: string
 }
 
-type ResponseDTO = IPageDTO
-
-export class CreatePageController extends Controller<RequestData, ResponseDTO> {
-	constructor(private createPageUseCase: CreatePageUseCase) {
+export class GetPageByIdController extends Controller<RequestData, IPageDTO> {
+	constructor(private getPageByIdUseCase: GetPageByIdUseCase) {
 		super()
 	}
 
-	protected async handle(requestData: RequestData): Promise<HttpResponse> {
-		const {
-			title,
-			description,
-			payload: { userId }
-		} = requestData
+	protected async handle(req: RequestData): Promise<HttpResponse> {
+        const { id } = req
 
-		const output = await this.createPageUseCase.execute({
-			pageTitle: title,
-			pageDescription: description,
-			owner: userId
-		})
+        const output = await this.getPageByIdUseCase.execute({ id })
 
-        if (output.isLeft()) {
+        if(output.isLeft()) {
             const error = output.value
             return this.clientError(error)
         }
@@ -58,6 +44,6 @@ export class CreatePageController extends Controller<RequestData, ResponseDTO> {
             }))
         }
 
-        return this.created(response)
-	}
+        return this.ok(response)
+    }
 }

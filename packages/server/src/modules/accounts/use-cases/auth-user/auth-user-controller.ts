@@ -15,19 +15,19 @@ export class AuthUserController extends Controller<RequestData, Response> {
 		super()
 	}
 
-	async handle(requestData: RequestData) {
+	protected async handle(requestData: RequestData) {
 		const { email, password } = requestData
 
-		const result = await this.authUserUseCase.execute({
+		const output = await this.authUserUseCase.execute({
 			email,
 			password
 		})
 
-		if (result.isLeft()) {
-			const error = result.value
+		if (output.isLeft()) {
+			const error = output.value
 			return this.clientError(error)
 		}
 
-		return this.ok(result.value)
+		return this.ok(output.value)
 	}
 }

@@ -10,6 +10,6 @@ const pollsRouter = Router()
 
 pollsRouter.use(adaptMiddleware(ensureAuthenticatedMiddleware))
 
-pollsRouter.post('/create', adaptRoute(createPollController))
+pollsRouter.post('/', adaptRoute(createPollController))
 
 export { pollsRouter }

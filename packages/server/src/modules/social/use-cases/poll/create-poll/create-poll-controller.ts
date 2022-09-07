@@ -49,6 +49,6 @@ export class CreatePollController extends Controller<RequestData, IPollDTO> {
             pageId: output.value.pageId
         }
 
-        return this.ok(response)
+        return this.created(response)
 	}
 }
