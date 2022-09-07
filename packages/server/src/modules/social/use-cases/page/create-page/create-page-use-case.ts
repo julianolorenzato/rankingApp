@@ -8,33 +8,40 @@ import { InvalidLengthError } from 'shared/errors/invalid-length-error'
 import { IPageRepository } from 'modules/social/repositories/page-repository'
 import { PageTitle } from 'modules/social/domain/page/page-title'
 import { PageDescription } from 'modules/social/domain/page/page-description'
+import { NotFoundError } from 'shared/errors/not-found-error'
+import { IMemberRepository } from 'modules/social/repositories/member-repository'
 
 type Errors = InvalidLengthError | AlreadyExistsError
 
 type Input = {
-	owner: string
-	pageTitle: string
-	pageDescription: string
+	userId: string
+	title: string
+	description: string
 }
 
 type Output = Either<Errors, Page>
 
 export class CreatePageUseCase implements UseCase<Input, Output> {
-	constructor(private pageRepository: IPageRepository) {}
+	constructor(private pageRepository: IPageRepository, private memberRepository: IMemberRepository) {}
 
 	async execute(data: Input): Promise<Output> {
-		const { pageTitle, pageDescription, owner } = data
+		const { title, description, userId } = data
 
-		const pageTitleOrError = PageTitle.create({ value: pageTitle })
-		const pageDescriptionOrError = PageDescription.create({ value: pageDescription })
+		const pageTitleOrError = PageTitle.create({ value: title })
+		const pageDescriptionOrError = PageDescription.create({ value: description })
 
+		// If title error or description error return
 		if (pageTitleOrError.isLeft()) return left(pageTitleOrError.value)
 		if (pageDescriptionOrError.isLeft()) return left(pageDescriptionOrError.value)
+
+		// If owner does not exists return
+		const member = await this.memberRepository.findByUserId(userId)
+		if (!member) return left(new NotFoundError('Member', userId))
 
 		const page = Page.create({
 			title: pageTitleOrError.value,
 			description: pageDescriptionOrError.value,
-			owner,
+			owner: member.id,
 			followers: [],
 			polls: []
 		})

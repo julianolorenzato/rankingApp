@@ -25,13 +25,13 @@ export class CreatePollController extends Controller<RequestData, IPollDTO> {
 			pageId,
 			optionNames,
 			duration,
-			payload: { userId: ownerId }
+			payload: { userId }
 		} = requestData
 
         const output = await this.createPollUseCase.execute({
             title,
             pageId,
-            ownerId,
+            userId,
             duration,
             optionNames
         })
@@ -42,11 +42,12 @@ export class CreatePollController extends Controller<RequestData, IPollDTO> {
         }
 
         const response: IPollDTO = {
+            id: output.value.id,
             title: output.value.title.value,
-            duration: output.value.duration,
+            pageId: output.value.pageId,
             owner: output.value.owner,
-            options: output.value.options,
-            pageId: output.value.pageId
+            duration: output.value.duration,
+            options: output.value.options
         }
 
         return this.created(response)

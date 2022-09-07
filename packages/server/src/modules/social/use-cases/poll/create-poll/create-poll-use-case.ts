@@ -10,7 +10,7 @@ import { Either, left, right } from 'shared/logic/either'
 
 type Input = {
 	title: string
-	ownerId: string
+	userId: string
 	pageId: string
 	duration: Duration
 	optionNames: string[]
@@ -26,7 +26,7 @@ export class CreatePollUseCase implements UseCase<Input, Output> {
 	) {}
 
 	async execute(data: Input): Promise<Output> {
-		const { title, ownerId, pageId, duration, optionNames } = data
+		const { title, userId, pageId, duration, optionNames } = data
 
 		// If page does not exists return
 		const page = await this.pageRepository.findById(pageId)
@@ -37,11 +37,11 @@ export class CreatePollUseCase implements UseCase<Input, Output> {
 		if (titleOrError.isLeft()) return left(titleOrError.value)
 
 		// If owner does not exists return
-		const member = this.memberRepository.findByUserId(ownerId)
-		if (!member) return left(new NotFoundError('Member', ownerId))
+		const member = await this.memberRepository.findByUserId(userId)
+		if (!member) return left(new NotFoundError('Member', userId))
 
 		// If option error return
-		let validOptions: Option[]
+		let validOptions: Option[] = []
 		for (const name of optionNames) {
 			const option = Option.create({ name, votes: [] })
 
@@ -52,14 +52,14 @@ export class CreatePollUseCase implements UseCase<Input, Output> {
 
 		const poll = Poll.create({
 			title: titleOrError.value,
-			owner: ownerId,
+			owner: member.id,
 			pageId,
 			options: validOptions,
 			duration
 		})
 
         const possibleError = page.addPoll(poll)
-        if(possibleError.isLeft()) return left(possibleError.value)
+        if(possibleError?.isLeft()) return left(possibleError.value)
 
         await this.pageRepository.save(page)
 		await this.pollRepository.save(poll)

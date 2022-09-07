@@ -1,3 +1,4 @@
+import { UnexpectedError } from 'shared/errors/unexpected-error'
 import { HttpResponse } from './http-response'
 
 export abstract class Controller<RequestData, ResponseDTO = {}> {
@@ -71,12 +72,12 @@ export abstract class Controller<RequestData, ResponseDTO = {}> {
 	}
 
 	private fail(error: Error): HttpResponse {
-		console.log(`[Controller] Unexpected Error: ${error.message}`)
+		console.log(`[Controller] Unexpected Error: ${error.stack}`)
 
 		return {
 			statusCode: 500,
 			body: {
-				error: error.message
+				error: new UnexpectedError().message
 			}
 		}
 	}

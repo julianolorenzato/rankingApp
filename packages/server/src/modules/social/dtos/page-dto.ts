@@ -1,6 +1,7 @@
 import { IPollDTO } from './poll-dto'
 
 export interface IPageDTO {
+	id: string
 	title: string
 	slug: string
 	description: string
