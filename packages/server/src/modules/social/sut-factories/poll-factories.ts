@@ -1,18 +1,18 @@
 import { randomUUID } from 'crypto'
 import { Option, IOptionProps } from 'modules/social/domain/poll/option'
-import { IOptionVoteProps, OptionVote } from 'modules/social/domain/poll/option-vote'
+import { IVoteProps, Vote } from 'modules/social/domain/poll/vote'
 import { IPollProps, Poll } from 'modules/social/domain/poll/poll'
 import { IPollTitleProps, PollTitle } from 'modules/social/domain/poll/poll-title'
 
 export namespace PollFactories {
-	export const makeOptionVote = (
-		{ optionId = randomUUID(), owner = randomUUID(), pollId = randomUUID() }: Partial<IOptionVoteProps> = {},
+	export const makeVote = (
+		{ optionId = randomUUID(), memberId = randomUUID(), pollId = randomUUID() }: Partial<IVoteProps> = {},
 		id?: string,
 		createdAt?: Date
 	) => {
-		return OptionVote.create(
+		return Vote.create(
 			{
-				owner,
+				memberId,
 				optionId,
 				pollId
 			},
@@ -33,13 +33,13 @@ export namespace PollFactories {
 			},
 			id,
 			createdAt
-		).value
+		).value as Option
 	}
 
 	export const makePollTitle = ({ value = 'Qual a melhor arma do Valorant?' }: Partial<IPollTitleProps> = {}) => {
 		return PollTitle.create({
 			value
-		}).value
+		}).value as PollTitle
 	}
 
 	export const makePoll = (
@@ -50,7 +50,7 @@ export namespace PollFactories {
 			duration = {
 				type: 'permanent'
 			},
-			options = [makeOption() as Option]
+			options = []
 		}: Partial<IPollProps> = {},
 		id?: string,
 		createdAt?: Date

@@ -40,7 +40,7 @@ export class GetPageByIdController extends Controller<RequestData, IPageDTO> {
                     name: option.name,
                     votes: option.votes.map(vote => ({
                         id: vote.id,
-                        owner: vote.owner,
+                        memberId: vote.memberId,
                         pollId: vote.pollId,
                         optionId: vote.optionId
                     }))

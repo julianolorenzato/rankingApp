@@ -1,13 +1,11 @@
 import { AggregateRoot } from 'shared/contracts/domain/aggregate-root'
-import { Entity } from 'shared/contracts/domain/entity'
 import { AlreadyExistsError } from 'shared/errors/already-exists-error'
 import { NotFoundError } from 'shared/errors/not-found-error'
 import { PollAlreadyFinishedError } from 'shared/errors/poll-already-finished-error'
-import { Either, left, right } from 'shared/logic/either'
-import { MemberId } from '../member/member-id'
-import { PageId } from '../page/page-id'
+import { Either, left } from 'shared/logic/either'
+import { MemberId, PageId } from 'shared/contracts/domain/ids'
 import { Option } from './option'
-import { OptionVote } from './option-vote'
+import { Vote } from './vote'
 import { PollTitle } from './poll-title'
 
 type AddOptionErrors = PollAlreadyFinishedError | AlreadyExistsError
@@ -62,7 +60,7 @@ export class Poll extends AggregateRoot<IPollProps> {
 		return this.props.duration
 	}
 
-	vote(optionId: string, vote: OptionVote): Either<VoteErrors, void> {
+	vote(optionId: string, vote: Vote): Either<VoteErrors, void> {
 		if (this.isFinished()) {
 			return left(new PollAlreadyFinishedError(this.title.value))
 		}

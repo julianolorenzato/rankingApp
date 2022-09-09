@@ -1,11 +1,11 @@
 import { randomUUID } from "crypto"
-import { OptionVote } from "./option-vote"
+import { Vote } from "./vote"
 
-describe('Entity - option vote', () => {
-    it('should create an option vote', () => {
-        const vote = OptionVote.create({
+describe('Entity - vote', () => {
+    it('should create an vote', () => {
+        const vote = Vote.create({
             optionId: randomUUID(),
-            owner: randomUUID(),
+            memberId: randomUUID(),
             pollId: randomUUID()
         })
 

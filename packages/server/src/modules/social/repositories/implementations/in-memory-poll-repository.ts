@@ -8,6 +8,15 @@ class InMemoryPollRepository implements IPollRepository {
         this.items = this.items.filter(pl => pl.id !== poll.id)
         this.items.push(poll)
     }
+
+    async findById(id: string): Promise<Poll> {
+        const poll = this.items.find(pl => pl.id === id)
+        if (!poll) {
+            return null
+        }
+
+        return poll
+    }
 }
 
 const inMemoryPollRepositoryInstance = new InMemoryPollRepository()

@@ -1,6 +1,6 @@
 interface IVoteDTO {
     id: string
-    owner: string
+    memberId: string
     pollId: string
     optionId: string
 }
