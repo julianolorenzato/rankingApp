@@ -1,11 +1,12 @@
-import { IPollDTO } from './poll-dto'
+import { MemberId, PollId } from 'shared/contracts/domain/ids'
 
 export interface IPageDTO {
-	id: string
 	title: string
-	slug: string
 	description: string
-    owner: string
-	followers: string[]
-	polls: IPollDTO[]
+	slug: string
+	ownerId: MemberId
+	followerIds: MemberId[]
+	pollIds: PollId[]
+	id: string
+	createdAt: Date
 }

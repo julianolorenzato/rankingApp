@@ -43,9 +43,10 @@ export class CreatePollController extends Controller<RequestData, IPollDTO> {
 
         const response: IPollDTO = {
             id: output.value.id,
+            createdAt: output.value.createdAt,
             title: output.value.title.value,
             pageId: output.value.pageId,
-            owner: output.value.owner,
+            ownerId: output.value.ownerId,
             duration: output.value.duration,
             options: output.value.options
         }

@@ -3,17 +3,16 @@ import { AlreadyExistsError } from 'shared/errors/already-exists-error'
 import { NotFoundError } from 'shared/errors/not-found-error'
 import { Either, left } from 'shared/logic/either'
 import { slugify } from 'shared/logic/slugify'
-import { MemberId } from 'shared/contracts/domain/ids'
-import { Poll } from '../poll/poll'
+import { MemberId, PollId } from 'shared/contracts/domain/ids'
 import { PageDescription } from './page-description'
 import { PageTitle } from './page-title'
 
 export interface IPageProps {
 	title: PageTitle
 	description: PageDescription
-	owner: MemberId
-	followers: MemberId[]
-	polls: Poll[]
+	ownerId: MemberId
+	followerIds: MemberId[]
+	pollIds: PollId[]
 }
 
 export class Page extends AggregateRoot<IPageProps> {
@@ -29,50 +28,46 @@ export class Page extends AggregateRoot<IPageProps> {
 		return this.props.description
 	}
 
-	get owner(): string {
-		return this.props.owner
+	get ownerId(): string {
+		return this.props.ownerId
 	}
 
-	get followers(): string[] {
-		return this.props.followers
+	get followerIds(): string[] {
+		return this.props.followerIds
 	}
 
-	get polls(): Poll[] {
-		return this.props.polls
+	get pollIds(): string[] {
+		return this.props.pollIds
 	}
 
 	get slug(): string {
 		return slugify(this.title.value)
 	}
 
-	addPoll(poll: Poll): Either<AlreadyExistsError, void> {
-		const alreadyExists = this.props.polls.some(p => p.id === poll.id)
+	addPoll(pollId: string): Either<AlreadyExistsError, void> {
+		const alreadyExists = this.props.pollIds.some(id => id === pollId)
 
 		if (alreadyExists) {
-			return left(new AlreadyExistsError('poll', poll.id))
+			return left(new AlreadyExistsError('poll', pollId))
 		}
 
-		this.polls.push(poll)
+		this.pollIds.push(pollId)
 	}
 
-	removePoll(pollId: string, memberId: string): Either<NotFoundError | Error, void> {
-		const poll = this.props.polls.find(p => p.id === pollId)
+	removePoll(pollId: string): Either<NotFoundError, void> {
+		const poll = this.props.pollIds.find(id => id === pollId)
 
 		if (!poll) {
 			return left(new NotFoundError('Poll', pollId))
 		}
 
-		if (poll.owner !== memberId) {
-			return left(new Error('for remove a poll you must be its owner'))
-		}
-
-		this.props.polls = this.props.polls.filter(p => p.id !== pollId)
+		this.props.pollIds = this.props.pollIds.filter(id => id !== pollId)
 	}
 
 	static create(props: IPageProps, id?: string, createdAt?: Date): Page {
 		const isNewPage = !id
 
-		const pageProps: IPageProps = isNewPage ? { ...props, followers: [], polls: [] } : props
+		const pageProps: IPageProps = isNewPage ? { ...props, followerIds: [], pollIds: [] } : props
 
 		return new Page(pageProps, id, createdAt)
 	}

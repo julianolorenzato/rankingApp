@@ -30,7 +30,7 @@ export type Duration = Permanent | Temporary
 export interface IPollProps {
 	title: PollTitle
 	options: Option[]
-	owner: MemberId
+	ownerId: MemberId
 	pageId: PageId
 	duration: Duration
 }
@@ -44,8 +44,8 @@ export class Poll extends AggregateRoot<IPollProps> {
 		return this.props.title
 	}
 
-	get owner(): string {
-		return this.props.owner
+	get ownerId(): string {
+		return this.props.ownerId
 	}
 
 	get options(): Option[] {

@@ -41,9 +41,9 @@ export class CreatePageUseCase implements UseCase<Input, Output> {
 		const page = Page.create({
 			title: pageTitleOrError.value,
 			description: pageDescriptionOrError.value,
-			owner: member.id,
-			followers: [],
-			polls: []
+			ownerId: member.id,
+			followerIds: [],
+			pollIds: []
 		})
 
 		const pageTitleAlreadyExists = await this.pageRepository.findByTitle(page.title.value)

@@ -1,28 +1,29 @@
+import { OptionId, PageId, PollId, VoteId } from "shared/contracts/domain/ids"
+
 interface IVoteDTO {
-    id: string
     memberId: string
     pollId: string
     optionId: string
+    id: VoteId
+    createdAt: Date
 }
 
 interface IOptionDTO {
-    id: string
     name: string
     votes: IVoteDTO[]
+    id: OptionId
+    createdAt: Date
 }
 
 export interface IPollDTO {
-    id: string
     title: string
-    owner: string
-    options: IOptionDTO[]
-    pageId: string
+    ownerId: string
+    pageId: PageId
     duration: {
         type: 'permanent' | 'temporary'
         endDate?: Date
     }
-    // results: {
-    //     name: string
-    //     percentage: number
-    // }[]
+    options: IOptionDTO[]
+    id: PollId
+    createdAt: Date
 }

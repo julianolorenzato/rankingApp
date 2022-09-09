@@ -1,4 +1,5 @@
 import { IMemberDTO } from 'modules/social/dtos/member-dto'
+import { MemberMapper } from 'modules/social/mappers/member-mapper'
 import { Controller } from 'shared/contracts/infra/controller'
 import { GetMemberByUsernameUseCase } from '../get-member-by-username/get-member-by-username-use-case'
 
@@ -26,13 +27,14 @@ export class GetCurrentMemberController extends Controller<RequestData, Response
 			return this.clientError(error)
 		}
 
-		const response: IMemberDTO = {
-			id: output.value.id,
-			userId: output.value.userId,
-			username: output.value.username.value,
-			reputation: output.value.reputation,
-			createdAt: output.value.createdAt
-		}
+		const response = MemberMapper.toDTO(output.value)
+		// const response: IMemberDTO = {
+		// 	id: output.value.id,
+		// 	userId: output.value.userId,
+		// 	username: output.value.username.value,
+		// 	reputation: output.value.reputation,
+		// 	createdAt: output.value.createdAt
+		// }
 
 		return this.ok(response)
 	}

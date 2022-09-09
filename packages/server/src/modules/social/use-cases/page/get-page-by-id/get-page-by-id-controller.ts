@@ -24,28 +24,13 @@ export class GetPageByIdController extends Controller<RequestData, IPageDTO> {
 
         const response: IPageDTO = {
             id: output.value.id,
+            createdAt: output.value.createdAt,
             title: output.value.title.value,
             description: output.value.description.value,
             slug: output.value.slug,
-            owner: output.value.owner,
-            followers: output.value.followers,
-            polls: output.value.polls.map(poll => ({
-                id: poll.id,
-                title: poll.title.value,
-                pageId: poll.pageId,
-                owner: poll.owner,
-                duration: poll.duration,
-                options: poll.options.map(option => ({
-                    id: option.id,
-                    name: option.name,
-                    votes: option.votes.map(vote => ({
-                        id: vote.id,
-                        memberId: vote.memberId,
-                        pollId: vote.pollId,
-                        optionId: vote.optionId
-                    }))
-                }))
-            }))
+            ownerId: output.value.ownerId,
+            followerIds: output.value.followerIds,
+            pollIds: output.value.pollIds
         }
 
         return this.ok(response)

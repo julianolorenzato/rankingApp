@@ -1,7 +1,7 @@
 export interface IMemberDTO {
     id: string
-    userId: string
-    username: string
-    reputation: number
     createdAt: Date
+    username: string
+    userId: string
+    reputation: number
 }

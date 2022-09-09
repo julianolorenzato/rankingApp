@@ -52,17 +52,20 @@ export class CreatePollUseCase implements UseCase<Input, Output> {
 
 		const poll = Poll.create({
 			title: titleOrError.value,
-			owner: member.id,
+			ownerId: member.id,
 			pageId,
 			options: validOptions,
 			duration
 		})
 
-        const possibleError = page.addPoll(poll)
+		// SAVE POLL
+		await this.pollRepository.save(poll)
+
+        const possibleError = page.addPoll(poll.id)
         if(possibleError?.isLeft()) return left(possibleError.value)
 
+		// SAVE PAGE
         await this.pageRepository.save(page)
-		await this.pollRepository.save(poll)
 
 		return right(poll)
 	}
