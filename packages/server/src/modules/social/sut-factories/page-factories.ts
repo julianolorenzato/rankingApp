@@ -22,9 +22,9 @@ export namespace PageFactories {
 		{
 			title = makePageTitle() as PageTitle,
 			description = makePageDescription() as PageDescription,
-			owner = randomUUID(),
-			followers = [],
-			polls = []
+			ownerId = randomUUID(),
+			followerIds = [],
+			pollIds = []
 		}: Partial<IPageProps> = {},
 		id?: string,
 		createdAt?: Date
@@ -33,9 +33,9 @@ export namespace PageFactories {
 			{
 				title,
 				description,
-				owner,
-				followers,
-				polls
+				ownerId,
+				followerIds,
+				pollIds
 			},
 			id,
 			createdAt

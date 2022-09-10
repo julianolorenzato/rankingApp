@@ -11,26 +11,26 @@ describe('Agreggate root - page', () => {
 
 	it('should create a new page', () => {
 		const page = makePage({
-			polls: [makePoll(), makePoll(), makePoll()],
-			followers: [randomUUID(), randomUUID()]
+			pollIds: [randomUUID(), randomUUID(), randomUUID()],
+			followerIds: [randomUUID(), randomUUID()]
 		})
 
-		expect(page.polls).toHaveLength(0)
-		expect(page.followers).toHaveLength(0)
+		expect(page.pollIds).toHaveLength(0)
+		expect(page.followerIds).toHaveLength(0)
 	})
 
 	it('should create an existing page', () => {
 		const page = makePage(
 			{
-				polls: [makePoll(), makePoll(), makePoll()],
-				followers: [randomUUID(), randomUUID()]
+				pollIds: [randomUUID(), randomUUID(), randomUUID()],
+				followerIds: [randomUUID(), randomUUID()]
 			},
 			randomUUID(),
 			new Date()
 		)
 
-		expect(page.polls).toHaveLength(3)
-		expect(page.followers).toHaveLength(2)
+		expect(page.pollIds).toHaveLength(3)
+		expect(page.followerIds).toHaveLength(2)
 	})
 
 	it('should have a correct property slug based on title', () => {
@@ -47,50 +47,49 @@ describe('Agreggate root - page', () => {
 		const page = makePage()
 		const poll = makePoll()
 
-		page.addPoll(poll)
+		page.addPoll(poll.id)
 
-		expect(page.polls).toHaveLength(1)
-		expect(page.polls[0].id).toBe(poll.id)
+		expect(page.pollIds).toHaveLength(1)
+		expect(page.pollIds[0]).toBe(poll.id)
 	})
 
 	it('should not be able to add a poll that already exists in a page', () => {
-		const poll = makePoll()
-		const page = makePage({ polls: [poll] }, randomUUID(), new Date())
+		const pollId = randomUUID()
+		const page = makePage({ pollIds: [pollId] }, randomUUID(), new Date())
 
-		const result = page.addPoll(poll)
+		const result = page.addPoll(pollId)
 
-		expect(page.polls).toHaveLength(1)
+		expect(page.pollIds).toHaveLength(1)
 		expect(result.value).toBeInstanceOf(AlreadyExistsError)
 	})
 
     it('should be able to remove a poll from a page', () => {
-        const memberId = randomUUID()
-        const poll = makePoll({ owner: memberId })
-        const page = makePage({ polls: [poll] }, randomUUID(), new Date())
+        const pollId = randomUUID()
+        const page = makePage({ pollIds: [pollId] }, randomUUID(), new Date())
 
-        page.removePoll(poll.id, memberId)
+        page.removePoll(pollId)
 
-        expect(page.polls).toHaveLength(0)
+        expect(page.pollIds).toHaveLength(0)
     })
 
     it('should not be able to remove a poll that does not exists in a page', () => {
-        const poll = makePoll()
+        const poll1 = makePoll()
         const poll2 = makePoll()
-        const page = makePage({ polls: [poll] }, randomUUID(), new Date())
+        const page = makePage({ pollIds: [poll1.id] }, randomUUID(), new Date())
 
-        const result = page.removePoll(poll2.id, randomUUID())
+        const result = page.removePoll(poll2.id)
 
-        expect(page.polls).toHaveLength(1)
+        expect(page.pollIds).toHaveLength(1)
         expect(result.value).toBeInstanceOf(NotFoundError)
     })
 
-    it('should not be able to remove a poll by a member who does not own it', () => {
-        const poll = makePoll()
-        const page = makePage({ polls: [poll] }, randomUUID(), new Date())
+    // it('should not be able to remove a poll by a member who does not own it', () => {
+    //     const poll = makePoll()
+    //     const page = makePage({ polls: [poll] }, randomUUID(), new Date())
 
-        const result = page.removePoll(poll.id, randomUUID())
+    //     const result = page.removePoll(poll.id, randomUUID())
 
-        expect(page.polls).toHaveLength(1)
-        expect((result.value as Error).message).toBe('for remove a poll you must be its owner')
-    })
+    //     expect(page.polls).toHaveLength(1)
+    //     expect((result.value as Error).message).toBe('for remove a poll you must be its owner')
+    // })
 })

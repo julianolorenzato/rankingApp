@@ -1,5 +1,6 @@
 import { Duration } from 'modules/social/domain/poll/poll'
 import { IPollDTO } from 'modules/social/dtos/poll-dto'
+import { PollMapper } from 'modules/social/mappers/poll-mapper'
 import { Controller } from 'shared/contracts/infra/controller'
 import { HttpResponse } from 'shared/contracts/infra/http-response'
 import { CreatePollUseCase } from './create-poll-use-case'
@@ -41,15 +42,7 @@ export class CreatePollController extends Controller<RequestData, IPollDTO> {
             return this.clientError(error)
         }
 
-        const response: IPollDTO = {
-            id: output.value.id,
-            createdAt: output.value.createdAt,
-            title: output.value.title.value,
-            pageId: output.value.pageId,
-            ownerId: output.value.ownerId,
-            duration: output.value.duration,
-            options: output.value.options
-        }
+        const response = PollMapper.toDTO(output.value)
 
         return this.created(response)
 	}

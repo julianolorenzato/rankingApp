@@ -28,13 +28,6 @@ export class GetCurrentMemberController extends Controller<RequestData, Response
 		}
 
 		const response = MemberMapper.toDTO(output.value)
-		// const response: IMemberDTO = {
-		// 	id: output.value.id,
-		// 	userId: output.value.userId,
-		// 	username: output.value.username.value,
-		// 	reputation: output.value.reputation,
-		// 	createdAt: output.value.createdAt
-		// }
 
 		return this.ok(response)
 	}
