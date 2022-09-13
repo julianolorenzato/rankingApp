@@ -5,15 +5,13 @@ import { NotFoundError } from 'shared/errors/not-found-error'
 import { Either, left, right } from 'shared/logic/either'
 import { Vote } from '../../../domain/poll/vote'
 
-type Errors = NotFoundError
-
 type Input = {
 	userId: string
 	pollId: string
 	optionId: string
 }
 
-type Output = Either<Errors, Vote>
+type Output = Either<NotFoundError, void>
 
 export class VoteInAPollUseCase implements UseCase<Input, Output> {
 	constructor(private pollRepositoy: IPollRepository, private memberRepository: IMemberRepository) {}
@@ -44,7 +42,5 @@ export class VoteInAPollUseCase implements UseCase<Input, Output> {
         }
 
         await this.pollRepositoy.save(poll)
-
-        return right(vote)
 	}
 }

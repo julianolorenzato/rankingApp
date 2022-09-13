@@ -9,6 +9,7 @@ import { getPageByIdController } from 'modules/social/use-cases/page/get-page-by
 const pagesRouter = Router()
 
 pagesRouter.post('/', adaptMiddleware(ensureAuthenticatedMiddleware), adaptRoute(createPageController))
+
 pagesRouter.get('/:id', adaptRoute(getPageByIdController))
 
 export { pagesRouter }
