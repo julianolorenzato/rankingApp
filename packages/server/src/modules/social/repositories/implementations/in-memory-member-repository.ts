@@ -13,6 +13,11 @@ export class InMemoryMemberRepository implements IMemberRepository {
 		return members
 	}
 
+	async findBulkById(followerIds: string[]): Promise<Member[]> {
+		const members = followerIds.map(id => this.items.find(member => member.id === id))
+		return members
+	}
+
 	async findByUsername(username: string): Promise<Member | null> {
 		const member = this.items.find(member => member.username.value === username)
 		if (!member) {

@@ -6,6 +6,7 @@ import { slugify } from 'shared/logic/slugify'
 import { MemberId, PollId } from 'shared/contracts/domain/ids'
 import { PageDescription } from './page-description'
 import { PageTitle } from './page-title'
+import { AlreadyFollowingError } from 'shared/errors/already-following-error'
 
 export interface IPageProps {
 	title: PageTitle
@@ -62,6 +63,20 @@ export class Page extends AggregateRoot<IPageProps> {
 		}
 
 		this.props.pollIds = this.props.pollIds.filter(id => id !== pollId)
+	}
+
+	beFollowed(memberId: string): Either<AlreadyFollowingError, void> {
+		const alreadyFollowing = this.props.followerIds.find(id => id === memberId)
+
+		if (alreadyFollowing) {
+			return left(new AlreadyFollowingError(memberId))
+		}
+
+		this.followerIds.push(memberId)
+	}
+
+	beUnfollowed(memberId: string): Either<NotFoundError, void> {
+
 	}
 
 	static create(props: IPageProps, id?: string, createdAt?: Date): Page {

@@ -1,4 +1,4 @@
-import 'modules/social/subscriptions'
+import 'shared/events/subscriptions'
 import { app } from './app'
 
 const PORT = 3333

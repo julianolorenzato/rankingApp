@@ -5,3 +5,4 @@ export type UserId = string
 export type VoteId = string
 export type OptionId = string
 export type RankingId = string
+export type FeedId = string
