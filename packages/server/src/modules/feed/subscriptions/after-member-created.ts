@@ -1,9 +1,9 @@
 import { IHandler } from 'shared/contracts/domain/event-handler'
 import { EventsDispatcher } from 'shared/events/events-dispatcher'
 import { MemberCreated } from 'modules/social/domain/member/events/member-created'
-import { CreateFeedUseCase } from '../use-cases/create-feed/create-feed-use-case'
+import { CreateFeedUseCase } from '../use-cases/feed/create-feed/create-feed-use-case'
 
-export class AfterMemberCreated implements IHandler {
+export class AfterMemberCreated implements IHandler<MemberCreated> {
 	private createFeedUseCase: CreateFeedUseCase
 
 	constructor(createFeedUseCase: CreateFeedUseCase) {

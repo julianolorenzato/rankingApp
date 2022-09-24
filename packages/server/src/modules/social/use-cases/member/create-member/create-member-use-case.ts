@@ -4,7 +4,7 @@ import { Member } from '../../../domain/member/member'
 import { Either, left } from 'shared/logic/either'
 import { IMemberRepository } from '../../../repositories/member-repository'
 import { AlreadyExistsError } from 'shared/errors/already-exists-error'
-import { EventsDispatcher } from 'shared/events/events-dispatcher'
+import { EventDispatcher } from 'shared/events/event-dispatcher'
 
 type Input = {
 	userId: string
@@ -31,7 +31,7 @@ export class CreateMemberUseCase implements UseCase<Input, Output> {
 			return left(new AlreadyExistsError('member', `of id ${member.id}`))
 		}
 
-		EventsDispatcher.dispatchEventsForAggregate(member.id)
+		EventDispatcher.dispatchEventsForAggregate(member.id)
 
 		await this.memberRepository.save(member)
 	}

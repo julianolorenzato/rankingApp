@@ -13,7 +13,7 @@ export class CreateFeedUseCase implements UseCase<Input, Output> {
 	constructor(private feedRepository: IFeedRepository) {}
 
 	async execute({ memberId }: Input): Promise<Output> {
-		const feed = Feed.create({ memberId, polls: [] })
+		const feed = Feed.create({ memberId, contents: [] })
 
 		await this.feedRepository.save(feed)
 

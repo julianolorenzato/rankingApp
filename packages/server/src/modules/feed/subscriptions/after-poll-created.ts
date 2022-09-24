@@ -1,29 +1,32 @@
 import { IHandler } from 'shared/contracts/domain/event-handler'
-import { EventsDispatcher } from 'shared/events/events-dispatcher'
+import { EventDispatcher } from 'shared/events/event-dispatcher'
 import { PollCreated } from 'modules/social/domain/poll/events/poll-created'
-import { GenerateFeedUseCase } from '../use-cases/generate-feeds (by-created-poll)/generate-feeds-use-case'
+import { CreateContentUseCase } from '../use-cases/post/create-post/create-posts-use-case'
+import { IncreaseFeedsUseCase } from '../use-cases/feed/increase-poll-in-feeds/increase-poll-in-feeds'
 
-export class AfterPollCreated implements IHandler {
-	private generateFeedUseCase: GenerateFeedUseCase
+export class AfterPollCreated implements IHandler<PollCreated> {
+	private createContentUseCase: CreateContentUseCase
+	private increaseFeedsUseCase: IncreaseFeedsUseCase
 
-	constructor(generateFeedUseCase: GenerateFeedUseCase) {
+	constructor(increaseFeedsUseCase: IncreaseFeedsUseCase) {
 		this.setupSubscriptions()
-		this.generateFeedUseCase = generateFeedUseCase
+		this.increaseFeedsUseCase = increaseFeedsUseCase
 	}
 
 	setupSubscriptions(): void {
-		EventsDispatcher.registerHandlerToEvent(this.handle.bind(this), PollCreated.name)
+		EventDispatcher.registerHandlerToEvent(this.handle.bind(this), PollCreated.name)
 	}
 
 	async handle(event: PollCreated): Promise<void> {
 		const { poll } = event
 
 		try {
-			await this.generateFeedUseCase.execute({ poll })
-			console.log(`[AfterUserRegistered]: Successfully executed CreateMember use case AfterUserRegistered`)
+			const content = this.createContentUseCase.execute({ poll })
+			await this.increaseFeedsUseCase.execute({ content })
+			console.log(`[AfterPollCreated]: Successfully executed CreateContent and IncreaseFeeds use cases AfterPollCreated`)
 		} catch (err) {
 			console.log(err)
-			console.log(`[AfterUserRegistered]: Failed to execute CreateMember use case AfterUserRegistered.`)
+			console.log(`[AfterPollCreated]: Failed to execute CreateContent or IncreaseFeeds use cases AfterPollCreated.`)
 		}
 	}
 }

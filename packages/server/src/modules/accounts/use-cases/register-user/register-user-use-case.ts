@@ -7,7 +7,7 @@ import { IUserRepository } from '../../repositories/user-repository'
 
 import { InvalidEmailFormatError } from 'shared/errors/invalid-email-format-error'
 import { InvalidLengthError } from 'shared/errors/invalid-length-error'
-import { EventsDispatcher } from 'shared/events/events-dispatcher'
+import { EventDispatcher } from 'shared/events/event-dispatcher'
 import { AlreadyExistsError } from 'shared/errors/already-exists-error'
 
 type Errors = InvalidLengthError | InvalidEmailFormatError | AlreadyExistsError
@@ -58,7 +58,7 @@ export class RegisterUserUseCase implements UseCase<Input, Output> {
 
 		await this.userRepository.save(user)
 
-		EventsDispatcher.dispatchEventsForAggregate(user.id)
+		EventDispatcher.dispatchEventsForAggregate(user.id)
 
 		return right(user)
 	}

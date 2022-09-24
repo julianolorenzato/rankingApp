@@ -1,9 +1,9 @@
 import { IHandler } from 'shared/contracts/domain/event-handler'
-import { EventsDispatcher } from 'shared/events/events-dispatcher'
+import { EventDispatcher } from 'shared/events/event-dispatcher'
 import { UserRegistered } from 'modules/accounts/domain/user/events/user-registered'
 import { CreateMemberUseCase } from '../use-cases/member/create-member/create-member-use-case'
 
-export class AfterUserRegistered implements IHandler {
+export class AfterUserRegistered implements IHandler<UserRegistered> {
 	private createMemberUseCase: CreateMemberUseCase
 
 	constructor(createMemberUseCase: CreateMemberUseCase) {
@@ -12,7 +12,7 @@ export class AfterUserRegistered implements IHandler {
 	}
 
 	setupSubscriptions(): void {
-		EventsDispatcher.registerHandlerToEvent(this.handle.bind(this), UserRegistered.name)
+		EventDispatcher.registerHandlerToEvent(this.handle.bind(this), UserRegistered.name)
 	}
 
 	async handle(event: UserRegistered): Promise<void> {

@@ -2,96 +2,12 @@ import { randomUUID } from 'crypto'
 import { AlreadyExistsError } from 'shared/errors/already-exists-error'
 import { NotFoundError } from 'shared/errors/not-found-error'
 import { PollAlreadyFinishedError } from 'shared/errors/poll-already-finished-error'
-import { Option } from './option'
-import { Vote } from './vote'
-import { Duration, IPollProps, Poll } from './poll'
-import { PollTitle } from './poll-title'
+import { Duration, Poll } from './poll'
 import { PollFactories } from '../../sut-factories/poll-factories'
+import { UnauthorizedError } from 'shared/errors/unauthorized-error'
 
 describe('Agreggate root - poll', () => {
 	const { makePoll, makePollTitle, makeOption, makeVote } = PollFactories
-
-	// let votes: Vote[]
-	// let option1: Option
-	// let option2: Option
-	// let option3: Option
-	// let option4: Option
-	// let pollTitle: PollTitle
-	// let pollProps: IPollProps
-	// let poll: Poll
-	// let finishedPoll: Poll
-
-	// beforeEach(() => {
-	// 	votes = []
-
-	// 	for (let i = 0; i < 10; i++) {
-	// 		votes.push(
-	// 			Vote.create({
-	// 				memberId: randomUUID(),
-	// 				optionId: randomUUID(),
-	// 				pollId: randomUUID()
-	// 			})
-	// 		)
-	// 	}
-
-	// 	option1 = Option.create(
-	// 		{
-	// 			name: 'Vandal',
-	// 			votes: [votes[0], votes[1], votes[2]]
-	// 		},
-	// 		randomUUID(),
-	// 		new Date()
-	// 	).value as Option
-
-	// 	option2 = Option.create(
-	// 		{
-	// 			name: 'Phantom',
-	// 			votes: [votes[3], votes[4], votes[5]]
-	// 		},
-	// 		randomUUID(),
-	// 		new Date()
-	// 	).value as Option
-
-	// 	option3 = Option.create(
-	// 		{
-	// 			name: 'Operator',
-	// 			votes: [votes[6], votes[7]]
-	// 		},
-	// 		randomUUID(),
-	// 		new Date()
-	// 	).value as Option
-
-	// 	option4 = Option.create(
-	// 		{
-	// 			name: 'Sheriff',
-	// 			votes: [votes[8], votes[9]]
-	// 		},
-	// 		randomUUID(),
-	// 		new Date()
-	// 	).value as Option
-
-	// 	pollTitle = PollTitle.create({ value: 'Which is the Valorant best gun' }).value as PollTitle
-
-	// 	pollProps = {
-	// 		title: pollTitle,
-	// 		options: [option1, option2, option3, option4],
-	// 		owner: randomUUID(),
-	// 		pageId: randomUUID(),
-	// 		duration: {
-	// 			type: 'permanent'
-	// 		}
-	// 	}
-
-	// 	poll = Poll.create(pollProps, randomUUID(), new Date())
-	// 	finishedPoll = Poll.create({
-	// 		...pollProps,
-	// 		duration: {
-	// 			...pollProps.duration,
-	// 			type: 'temporary',
-	// 			endDate: new Date()
-	// 		}
-	// 	})
-	// })
 
 	it('should create a poll', () => {
 		const title = makePollTitle({ value: 'Qual a melhor serie do mundo?' })
@@ -162,6 +78,52 @@ describe('Agreggate root - poll', () => {
 
 		expect(result.value).toBeInstanceOf(AlreadyExistsError)
 		expect(poll.options.length).toBe(1)
+	})
+
+	it('should remove an option', () => {
+		const option = makeOption()
+		const poll = makePoll({ options: [option] })
+
+		const result = poll.removeOption(option.id, poll.ownerId)
+
+		expect(poll.options).toHaveLength(0)
+		expect(result).not.toBeDefined()
+	})
+	
+	it('should not remove an option by a member that does not own it', () => {
+		const option = makeOption()
+		const poll = makePoll({ options: [option] })
+	
+		const result = poll.removeOption(option.id, randomUUID())
+	
+		expect(poll.options).toHaveLength(1)
+		expect(result.value).toBeInstanceOf(UnauthorizedError)
+	})
+
+	it('should not remove an option in a poll that has been finished', () => {
+		const option = makeOption()
+		const finishedPoll = makePoll({
+			duration: {
+				type: 'temporary',
+				endDate: new Date()
+			},
+			options: [option]
+		})
+
+		const result = finishedPoll.removeOption(option.id, finishedPoll.ownerId)
+
+		expect(finishedPoll.isFinished()).toBeTruthy()
+		expect(result.value).toBeInstanceOf(PollAlreadyFinishedError)
+		expect(finishedPoll.options.length).toBe(1)
+	})
+
+	it('should not remove an option that does not exists', () => {
+		const poll = makePoll()
+
+		const result = poll.removeOption(randomUUID(), poll.ownerId)
+
+		expect(poll.options).toHaveLength(0)
+		expect(result.value).toBeInstanceOf(NotFoundError)
 	})
 
 	it('should vote in an option of a poll', () => {

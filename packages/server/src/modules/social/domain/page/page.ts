@@ -7,6 +7,12 @@ import { MemberId, PollId } from 'shared/contracts/domain/ids'
 import { PageDescription } from './page-description'
 import { PageTitle } from './page-title'
 import { AlreadyFollowingError } from 'shared/errors/already-following-error'
+import { PageFollowed } from './events/page-followed'
+import { PageUnfollowed } from './events/page-unfollowed'
+import { Member } from '../member/member'
+import { Poll } from '../poll/poll'
+import { PollAdded } from './events/poll-added'
+import { PollRemoved } from './events/poll-removed'
 
 export interface IPageProps {
 	title: PageTitle
@@ -45,38 +51,52 @@ export class Page extends AggregateRoot<IPageProps> {
 		return slugify(this.title.value)
 	}
 
-	addPoll(pollId: string): Either<AlreadyExistsError, void> {
-		const alreadyExists = this.props.pollIds.some(id => id === pollId)
+	addPoll(poll: Poll): Either<AlreadyExistsError, void> {
+		const alreadyExists = this.props.pollIds.some(id => id === poll.id)
 
 		if (alreadyExists) {
-			return left(new AlreadyExistsError('poll', pollId))
+			return left(new AlreadyExistsError('poll', poll.id))
 		}
 
-		this.pollIds.push(pollId)
+		this.pollIds.push(poll.id)
+
+		this.addDomainEvent(new PollAdded(poll, this))
 	}
 
-	removePoll(pollId: string): Either<NotFoundError, void> {
-		const poll = this.props.pollIds.find(id => id === pollId)
+	removePoll(poll: Poll): Either<NotFoundError, void> {
+		const exists = this.props.pollIds.find(id => id === poll.id)
 
-		if (!poll) {
-			return left(new NotFoundError('Poll', pollId))
+		if (!exists) {
+			return left(new NotFoundError('Poll', poll.id))
 		}
 
-		this.props.pollIds = this.props.pollIds.filter(id => id !== pollId)
+		this.props.pollIds = this.props.pollIds.filter(id => id !== poll.id)
+
+		this.addDomainEvent(new PollRemoved(poll, this))
 	}
 
-	beFollowed(memberId: string): Either<AlreadyFollowingError, void> {
-		const alreadyFollowing = this.props.followerIds.find(id => id === memberId)
+	beFollowed(member: Member): Either<AlreadyFollowingError, void> {
+		const alreadyFollowing = this.props.followerIds.find(id => id === member.id)
 
 		if (alreadyFollowing) {
-			return left(new AlreadyFollowingError(memberId))
+			return left(new AlreadyFollowingError(member.id))
 		}
 
-		this.followerIds.push(memberId)
+		this.followerIds.push(member.id)
+
+		this.addDomainEvent(new PageFollowed(member, this))
 	}
 
-	beUnfollowed(memberId: string): Either<NotFoundError, void> {
+	beUnfollowed(member: Member): Either<NotFoundError, void> {
+		const followerId = this.props.followerIds.find(id => id === member.id)
 
+		if (!followerId) {
+			return left(new NotFoundError('Member', member.id))
+		}
+
+		this.props.followerIds = this.props.followerIds.filter(id => id !== member.id)
+
+		this.addDomainEvent(new PageUnfollowed(member, this))
 	}
 
 	static create(props: IPageProps, id?: string, createdAt?: Date): Page {

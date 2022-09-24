@@ -1,17 +1,18 @@
-import { AggregateRoot } from '../contracts/domain/aggregate-root'
+import { IHandler } from 'shared/contracts/domain/event-handler'
 import { IDomainEvent } from '../contracts/domain/domain-event'
+import { AggregateRoot } from '../contracts/domain/aggregate-root'
 
-type HandlerFunction = (event: IDomainEvent) => void | Promise<void>
+// type HandlerFunction = (event: IDomainEvent) => void | Promise<void>
 
 interface IEventHandlers {
-	[eventName: string]: HandlerFunction[]
+	[eventName: string]: IHandler[]
 }
 
-export class EventsDispatcher {
+export class EventDispatcher {
 	private static eventHandlers: IEventHandlers = {}
 	private static markedAggregates: AggregateRoot<any>[] = []
 
-	static registerHandlerToEvent(handler: HandlerFunction, eventName: string): void {
+	static registerHandlerToEvent(handler: IHandler, eventName: string): void {
 		if (this.eventHandlers[eventName]) {
 			this.eventHandlers[eventName].push(handler)
 		} else {
@@ -57,12 +58,12 @@ export class EventsDispatcher {
 
 	private static dispatch(event: IDomainEvent): void {
 		const eventName = event.constructor.name
-		
+
 		if (this.eventHandlers.hasOwnProperty(eventName)) {
 			const handlers = this.eventHandlers[eventName]
 
 			for (let handler of handlers) {
-				handler(event)
+				handler.handle(event)
 			}
 		}
 	}

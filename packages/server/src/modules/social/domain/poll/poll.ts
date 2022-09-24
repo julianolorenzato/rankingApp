@@ -7,8 +7,11 @@ import { MemberId, PageId } from 'shared/contracts/domain/ids'
 import { Option } from './option'
 import { Vote } from './vote'
 import { PollTitle } from './poll-title'
+import { Member } from '../member/member'
+import { UnauthorizedError } from 'shared/errors/unauthorized-error'
 
 type AddOptionErrors = PollAlreadyFinishedError | AlreadyExistsError
+type RemoveOptionErrors = PollAlreadyFinishedError | AlreadyExistsError | UnauthorizedError
 type VoteErrors = PollAlreadyFinishedError | NotFoundError
 
 type Results = {
@@ -107,7 +110,24 @@ export class Poll extends AggregateRoot<IPollProps> {
 			return left(new AlreadyExistsError('option name', option.name))
 		}
 
-		this.options.push(option)
+		this.props.options.push(option)
+	}
+
+	removeOption(optionId: string, memberId: string): Either<RemoveOptionErrors, void> {
+		if (this.ownerId !== memberId) {
+			return left(new UnauthorizedError())
+		}
+
+		if (this.isFinished()) {
+			return left(new PollAlreadyFinishedError(this.title.value))
+		}
+
+		const exists = this.options.find(opt => opt.id === optionId)
+		if (!exists) {
+			return left(new NotFoundError('Option', optionId))
+		}
+
+		this.props.options = this.props.options.filter(opt => opt.id !== optionId)
 	}
 
 	static create(props: IPollProps, id?: string, createdAt?: Date): Poll {

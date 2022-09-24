@@ -6,7 +6,7 @@ export namespace MemberFactories {
 	const { makeUsername } = UserFactories
 
 	export const makeMember = (
-		{ username = makeUsername(), reputation = 0, userId = randomUUID() }: Partial<IMemberProps> = {},
+		{ username = makeUsername(), reputation = 0, userId = randomUUID(), followedPageIds = [] }: Partial<IMemberProps> = {},
 		id?: string,
 		createdAt?: Date
 	) => {
@@ -14,7 +14,8 @@ export namespace MemberFactories {
 			{
 				username,
 				reputation,
-				userId
+				userId,
+				followedPageIds
 			},
 			id,
 			createdAt
