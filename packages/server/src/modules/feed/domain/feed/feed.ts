@@ -1,7 +1,7 @@
 import { Poll } from 'modules/social/domain/poll/poll'
 import { AggregateRoot } from 'shared/contracts/domain/aggregate-root'
 import { MemberId } from 'shared/contracts/domain/ids'
-import { Post } from './post'
+import { Post } from '../post/post'
 
 interface IFeedProps {
 	memberId: MemberId
@@ -43,7 +43,7 @@ export class Feed extends AggregateRoot<IFeedProps> {
 	}
 
 	private rankByTime(): void {
-		this.props.contents.sort((a, b) => a.createdAt.getMilliseconds() - b.createdAt.getMilliseconds())
+		this.props.posts.sort((a, b) => a.createdAt.getMilliseconds() - b.createdAt.getMilliseconds())
 	}
 
 	private rank(): void {

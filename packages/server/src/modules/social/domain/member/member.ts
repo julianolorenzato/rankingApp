@@ -4,9 +4,8 @@ import { PageId, UserId } from 'shared/contracts/domain/ids'
 import { AlreadyFollowingError } from 'shared/errors/already-following-error'
 import { NotFoundError } from 'shared/errors/not-found-error'
 import { Either, left } from 'shared/logic/either'
-import { Page } from '../page/page'
-import { MemberCreated } from './events/member-created'
-import { PageFollowed } from '../page/events/page-followed'
+import { Page } from '../page'
+import { MemberCreated } from '../member/events'
 
 export interface IMemberProps {
 	userId: UserId

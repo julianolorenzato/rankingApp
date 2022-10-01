@@ -1,6 +1,6 @@
 import { UnauthorizedError } from 'shared/errors/unauthorized-error'
 import { Either, left } from 'shared/logic/either'
-import { Member } from '../../member/member'
+import { Member } from '../../member'
 import { Poll } from '../../poll/poll'
 import { Page } from '../page'
 

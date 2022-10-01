@@ -1,5 +1,5 @@
 import { IDomainEvent } from 'shared/contracts/domain/domain-event'
-import { Poll } from '../../poll/poll'
+import { Poll } from '../../poll'
 import { Page } from '../page'
 
 export class PollAdded implements IDomainEvent {

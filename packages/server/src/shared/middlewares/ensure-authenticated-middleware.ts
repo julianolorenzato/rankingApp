@@ -1,4 +1,4 @@
-import { JWT } from 'modules/accounts/services/jwt-service'
+import { JWT } from 'modules/accounts/application/services/jwt-service'
 import { HttpResponse } from 'shared/contracts/infra/http-response'
 import { Middleware } from 'shared/contracts/infra/middleware'
 import { AccessTokenMustBeProvidedError } from 'shared/errors/access-token-must-be-provided-error'

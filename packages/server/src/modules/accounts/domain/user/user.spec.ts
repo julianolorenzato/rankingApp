@@ -1,6 +1,6 @@
 import { randomUUID } from 'crypto'
 import { Email } from './email'
-import { UserRegistered } from './events/user-registered'
+import { UserRegistered } from '../user/events/user-registered'
 import { Password } from './password'
 import { User } from './user'
 import { Username } from './username'

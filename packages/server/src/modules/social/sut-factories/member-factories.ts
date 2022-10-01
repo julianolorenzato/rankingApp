@@ -1,5 +1,5 @@
 import { randomUUID } from 'crypto'
-import { IMemberProps, Member } from '../domain/member/member'
+import { IMemberProps, Member } from '../domain/member'
 import { UserFactories } from 'modules/accounts/sut-factories/user-factories'
 
 export namespace MemberFactories {

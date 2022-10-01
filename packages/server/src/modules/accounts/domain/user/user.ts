@@ -3,7 +3,7 @@ import { AggregateRoot } from 'shared/contracts/domain/aggregate-root'
 import { Username } from './username'
 import { Email } from './email'
 import { Password } from './password'
-import { UserRegistered } from './events/user-registered'
+import { UserRegistered } from '../user/events/user-registered'
 
 export interface IUserProps {
 	username: Username

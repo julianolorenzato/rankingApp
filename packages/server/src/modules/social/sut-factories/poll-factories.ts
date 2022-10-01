@@ -45,7 +45,7 @@ export namespace PollFactories {
 	export const makePoll = (
 		{
 			title = makePollTitle() as PollTitle,
-			owner = randomUUID(),
+			ownerId = randomUUID(),
 			pageId = randomUUID(),
 			duration = {
 				type: 'permanent'
@@ -58,7 +58,7 @@ export namespace PollFactories {
 		return Poll.create(
 			{
 				title,
-				owner,
+				ownerId,
 				pageId,
 				duration,
 				options

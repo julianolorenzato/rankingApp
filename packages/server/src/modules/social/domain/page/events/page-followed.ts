@@ -1,5 +1,5 @@
 import { IDomainEvent } from 'shared/contracts/domain/domain-event'
-import { Member } from '../../member/member'
+import { Member } from '../../member'
 import { Page } from '../page'
 
 export class PageFollowed implements IDomainEvent {

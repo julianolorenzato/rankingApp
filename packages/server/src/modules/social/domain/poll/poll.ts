@@ -7,7 +7,6 @@ import { MemberId, PageId } from 'shared/contracts/domain/ids'
 import { Option } from './option'
 import { Vote } from './vote'
 import { PollTitle } from './poll-title'
-import { Member } from '../member/member'
 import { UnauthorizedError } from 'shared/errors/unauthorized-error'
 
 type AddOptionErrors = PollAlreadyFinishedError | AlreadyExistsError

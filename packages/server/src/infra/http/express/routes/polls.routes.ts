@@ -4,9 +4,9 @@ import { adaptRoute } from 'shared/contracts/infra/adapters/express/adapt-route-
 import { adaptMiddleware } from 'shared/contracts/infra/adapters/express/adapt-middleware-to-express'
 import { ensureAuthenticatedMiddleware } from 'shared/middlewares/ensure-authenticated-middleware'
 
-import { createPollController } from 'modules/social/use-cases/poll/create-poll'
-import { getPollsByPageSlugController } from 'modules/social/use-cases/poll/get-polls-by-page-slug'
-import { voteInAPollController } from 'modules/social/use-cases/poll/vote-in-a-poll'
+import { createPollController } from 'modules/social/application/use-cases/poll/create-poll'
+import { getPollsByPageSlugController } from 'modules/social/application/use-cases/poll/get-polls-by-page-slug'
+import { voteInAPollController } from 'modules/social/application/use-cases/poll/vote-in-a-poll'
 
 const pollsRouter = Router()
 

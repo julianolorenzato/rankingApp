@@ -1,4 +1,4 @@
-import { ValueObject } from 'base/domain/value-object'
+import { ValueObject } from 'shared/contracts/domain/value-object'
 
 type RoleTypes = 'admin' | 'user'
 

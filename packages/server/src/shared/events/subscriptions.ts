@@ -1,2 +1,2 @@
-import 'modules/social/subscriptions'
-import 'modules/feed/subscriptions'
+import 'modules/social/application/subscriptions'
+import 'modules/feed/application/subscriptions'
