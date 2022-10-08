@@ -1,4 +1,4 @@
-import { IPollDTO } from 'modules/social/application/dtos/poll-dto'
+import { IPollDTO, toPollDTO } from 'modules/social/application/dtos/poll-dto'
 import { PollMapper } from 'modules/social/infra/mappers/poll-mapper'
 import { Controller } from 'shared/contracts/infra/controller'
 import { HttpResponse } from 'shared/contracts/infra/http-response'
@@ -23,7 +23,7 @@ export class GetPollsByPageSlugController extends Controller<RequestData, IPollD
 			return this.notFound(error)
 		}
 
-		const response = output.value.map(poll => PollMapper.toDTO(poll))
+		const response = output.value.map(poll => toPollDTO(poll))
 
 		return this.ok(response)
 	}

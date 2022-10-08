@@ -1,4 +1,4 @@
-import { IPageDTO } from 'modules/social/application/dtos/page-dto'
+import { IPageDTO, toPageDTO } from 'modules/social/application/dtos/page-dto'
 import { PageMapper } from 'modules/social/infra/mappers/page-mapper'
 import { Controller } from 'shared/contracts/infra/controller'
 import { HttpResponse } from 'shared/contracts/infra/http-response'
@@ -37,7 +37,7 @@ export class CreatePageController extends Controller<RequestData, ResponseDTO> {
             return this.clientError(error)
         }
 
-		const response = PageMapper.toDTO(output.value)
+		const response = toPageDTO(output.value)
 
         return this.created(response)
 	}

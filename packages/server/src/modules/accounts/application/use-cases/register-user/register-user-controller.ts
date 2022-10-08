@@ -1,5 +1,5 @@
 import { RegisterUserUseCase } from './register-user-use-case'
-import { UserDTO } from 'modules/accounts/application/dtos/user-dto'
+import { toUserDTO, UserDTO } from 'modules/accounts/application/dtos/user-dto'
 import { Controller } from 'shared/contracts/infra/controller'
 import { HttpResponse } from 'shared/contracts/infra/http-response'
 
@@ -30,11 +30,13 @@ export class RegisterUserController extends Controller<RequestData, ResponseDTO>
 			return this.clientError(error)
 		}
 
-		const response: UserDTO = {
-			id: output.value.id,
-			email: output.value.email.value,
-			username: output.value.username.value
-		}
+		const response: UserDTO = toUserDTO(output.value)
+
+		// const response: UserDTO = {
+		// 	id: output.value.id,
+		// 	email: output.value.email.value,
+		// 	username: output.value.username.value
+		// }
 
 		return this.created(response)
 	}

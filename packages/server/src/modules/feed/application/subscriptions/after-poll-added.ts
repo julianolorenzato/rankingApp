@@ -26,14 +26,16 @@ export class AfterPollAdded implements IHandler<PollAdded> {
 
 			await this.feedService.addPostToFeeds({ memberIds: [], post })
 
-			console.log(
-				`[AfterPollAdded]: Successfully executed CreateContent and IncreaseFeeds use cases AfterPollAdded`
-			)
+			console.info('[Event Handler Tiggered]:', {
+				name: AfterPollAdded.name,
+				status: 'SUCCESS',
+				description: 'Post created based in the poll and added to all feeds that follow the poll page'
+			})
 		} catch (err) {
 			console.log(err)
-			console.log(
-				`[AfterPollAdded]: Failed to execute CreateContent or IncreaseFeeds use cases AfterPollAdded.`
-			)
+			console.log('[AfterPollAdded]', {
+				status: 'FAILED'
+			})
 		}
 	}
 }

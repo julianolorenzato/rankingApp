@@ -1,5 +1,4 @@
-import { IMemberDTO } from 'modules/social/application/dtos/member-dto'
-import { MemberMapper } from 'modules/social/infra/mappers/member-mapper'
+import { IMemberDTO, toMemberDTO } from 'modules/social/application/dtos/member-dto'
 import { Controller } from 'shared/contracts/infra/controller'
 import { GetMembersUseCase } from './get-members-use-case'
 
@@ -11,7 +10,7 @@ export class GetMembersController extends Controller<null, IMemberDTO[]> {
 	async handle() {
 		const output = await this.getMembersUseCase.execute()
 
-		const response = output.map(member => MemberMapper.toDTO(member))
+		const response = output.map(member => toMemberDTO(member))
 
 		return this.ok(response)
 	}

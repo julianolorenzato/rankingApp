@@ -1,7 +1,6 @@
 import { GetMemberByUsernameUseCase } from './get-member-by-username-use-case'
-import { IMemberDTO } from 'modules/social/application/dtos/member-dto'
+import { IMemberDTO, toMemberDTO } from 'modules/social/application/dtos/member-dto'
 import { Controller } from 'shared/contracts/infra/controller'
-import { MemberMapper } from 'modules/social/infra/mappers/member-mapper'
 
 type RequestData = {
 	username: string
@@ -22,7 +21,7 @@ export class GetMemberByUsernameController extends Controller<RequestData, IMemb
 			return this.clientError(error)
 		}
 
-		const response = MemberMapper.toDTO(output.value)
+		const response = toMemberDTO(output.value)
 
 		return this.ok(response)
 	}

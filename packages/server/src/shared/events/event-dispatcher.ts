@@ -2,8 +2,6 @@ import { IHandler } from 'shared/contracts/domain/event-handler'
 import { IDomainEvent } from '../contracts/domain/domain-event'
 import { AggregateRoot } from '../contracts/domain/aggregate-root'
 
-// type HandlerFunction = (event: IDomainEvent) => void | Promise<void>
-
 interface IEventHandlers {
 	[eventName: string]: IHandler[]
 }

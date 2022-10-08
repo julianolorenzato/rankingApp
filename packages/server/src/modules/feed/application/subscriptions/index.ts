@@ -7,4 +7,3 @@ import { inMemoryPollRepositoryInstance } from 'modules/social/infra/repositorie
 new AfterMemberCreated(feedService)
 new AfterPollAdded(feedService, postService)
 new AfterPageFollowed(feedService, postService, inMemoryPollRepositoryInstance)
-console.log(postService.createPost)
