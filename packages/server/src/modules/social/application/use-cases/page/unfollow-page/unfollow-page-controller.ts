@@ -1,6 +1,6 @@
 import { Controller } from 'shared/contracts/infra/controller'
 import { HttpResponse } from 'shared/contracts/infra/http-response'
-import { FollowPageUseCase } from './follow-page-use-case'
+import { UnfollowPageUseCase } from './unfollow-page-use-case'
 
 type RequestData = {
 	pageId: string
@@ -9,8 +9,8 @@ type RequestData = {
 	}
 }
 
-export class FollowPageController extends Controller<RequestData, void> {
-	constructor(private followPageUseCase: FollowPageUseCase) {
+export class UnfollowPageController extends Controller<RequestData, void> {
+	constructor(private unfollowPageUseCase: UnfollowPageUseCase) {
 		super()
 	}
 
@@ -20,7 +20,7 @@ export class FollowPageController extends Controller<RequestData, void> {
 			payload: { userId }
 		} = requestData
 
-        const output = await this.followPageUseCase.execute({ pageId, userId })
+        const output = await this.unfollowPageUseCase.execute({ pageId, userId })
 
         if(output?.isLeft()) {
             const error = output.value

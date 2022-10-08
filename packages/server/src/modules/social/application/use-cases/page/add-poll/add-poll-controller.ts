@@ -2,7 +2,7 @@ import { Duration } from 'modules/social/domain/poll/poll'
 import { IPollDTO, toPollDTO } from 'modules/social/application/dtos/poll-dto'
 import { Controller } from 'shared/contracts/infra/controller'
 import { HttpResponse } from 'shared/contracts/infra/http-response'
-import { CreatePollUseCase } from './create-poll-use-case'
+import { AddPollUseCase } from './add-poll-use-case'
 
 type RequestData = {
 	title: string
@@ -14,8 +14,8 @@ type RequestData = {
 	optionNames: string[]
 }
 
-export class CreatePollController extends Controller<RequestData, IPollDTO> {
-    constructor(private createPollUseCase: CreatePollUseCase) {
+export class AddPollController extends Controller<RequestData, IPollDTO> {
+    constructor(private addPollUseCase: AddPollUseCase) {
         super()
     }
 
@@ -28,7 +28,7 @@ export class CreatePollController extends Controller<RequestData, IPollDTO> {
 			payload: { userId }
 		} = requestData
 
-        const output = await this.createPollUseCase.execute({
+        const output = await this.addPollUseCase.execute({
             title,
             pageId,
             userId,

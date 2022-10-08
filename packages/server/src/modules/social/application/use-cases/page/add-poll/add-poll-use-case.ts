@@ -19,7 +19,7 @@ type Input = {
 
 type Output = Either<Error, Poll>
 
-export class CreatePollUseCase implements UseCase<Input, Output> {
+export class AddPollUseCase implements UseCase<Input, Output> {
 	constructor(
 		private pollRepository: IPollRepository,
 		private memberRepository: IMemberRepository,

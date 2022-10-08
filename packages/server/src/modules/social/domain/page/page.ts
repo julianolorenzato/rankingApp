@@ -67,7 +67,7 @@ export class Page extends AggregateRoot<IPageProps> {
 		const exists = this.props.pollIds.find(id => id === poll.id)
 
 		if (!exists) {
-			return left(new NotFoundError('Poll', poll.id))
+			return left(new NotFoundError('Poll', `${poll.id} in page ${this.id}`))
 		}
 
 		this.props.pollIds = this.props.pollIds.filter(id => id !== poll.id)
