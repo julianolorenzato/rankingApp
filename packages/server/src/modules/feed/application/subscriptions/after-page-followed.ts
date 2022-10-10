@@ -2,19 +2,19 @@ import { IHandler } from 'shared/contracts/domain/event-handler'
 import { EventDispatcher } from 'shared/events/event-dispatcher'
 import { PageFollowed } from 'modules/social/domain/page/events/page-followed'
 import { FeedService } from '../services/feed-service'
-import { PostService } from '../services/post-service'
 import { IPollRepository } from 'modules/social/domain/poll/repository'
+import { IContentRepository } from 'modules/feed/domain/content/repository'
 
 export class AfterPageFollowed implements IHandler<PageFollowed> {
 	private pollRepository: IPollRepository
+	private contentRepository: IContentRepository
 	private feedService: FeedService
-	private postService: PostService
 
-	constructor(feedService: FeedService, postService: PostService, pollRepository: IPollRepository) {
+	constructor(feedService: FeedService, pollRepository: IPollRepository, contentRepository: IContentRepository) {
 		this.setupSubscriptions()
 		this.feedService = feedService
-		this.postService = postService
 		this.pollRepository = pollRepository
+		this.contentRepository = contentRepository
 	}
 
 	setupSubscriptions(): void {
@@ -26,10 +26,11 @@ export class AfterPageFollowed implements IHandler<PageFollowed> {
 			const { page, follower } = event
 
 			const polls = await this.pollRepository.findByPageId(page.id)
+			const pollIds = polls.map(poll => poll.id)
 
-			const posts = await this.postService.bulkCreatePost({ polls })
+			const contents = await this.contentRepository.bulkFindByPollId(pollIds)
 
-			await this.feedService.addPostsToFeed({ memberId: follower.id, posts })
+			await this.feedService.addContentsToFeed({ memberId: follower.id, contents })
 			
 			console.log(`[AfterPageFollowed]: Successfully executed GenerateFeed use case AfterPageFollowed`)
 		} catch (err) {

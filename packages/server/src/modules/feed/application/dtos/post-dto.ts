@@ -1,5 +1,4 @@
 import { IPollDTO } from "modules/social/application/dtos/poll-dto"
-import { type } from "os"
 
 interface CasePoll {
     type: 'poll'

@@ -2,16 +2,16 @@ import { IHandler } from 'shared/contracts/domain/event-handler'
 import { EventDispatcher } from 'shared/events/event-dispatcher'
 import { PollAdded } from 'modules/social/domain/page/events/poll-added'
 import { FeedService } from '../services/feed-service'
-import { PostService } from '../services/post-service'
+import { ContentService } from '../services/content-service'
 
 export class AfterPollAdded implements IHandler<PollAdded> {
 	private feedService: FeedService
-	private postService: PostService
+	private contentService: ContentService
 
-	constructor(feedService: FeedService, postService: PostService) {
+	constructor(feedService: FeedService, contentService: ContentService) {
 		this.setupSubscriptions()
 		this.feedService = feedService
-		this.postService = postService
+		this.contentService = contentService
 	}
 
 	setupSubscriptions(): void {
@@ -22,9 +22,9 @@ export class AfterPollAdded implements IHandler<PollAdded> {
 		const { poll } = event
 
 		try {
-			const post = await this.postService.createPost({ poll })
+			const content = await this.contentService.createContent({ poll })
 
-			await this.feedService.addPostToFeeds({ memberIds: [], post })
+			await this.feedService.addContentToFeeds({ memberIds: [], content })
 
 			console.info('[Event Handler Tiggered]:', {
 				name: AfterPollAdded.name,

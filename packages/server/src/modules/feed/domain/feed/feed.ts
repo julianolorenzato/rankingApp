@@ -1,11 +1,10 @@
-import { Poll } from 'modules/social/domain/poll/poll'
 import { AggregateRoot } from 'shared/contracts/domain/aggregate-root'
 import { MemberId } from 'shared/contracts/domain/ids'
-import { Post } from '../post/post'
+import { Content } from '../content/content'
 
 interface IFeedProps {
 	memberId: MemberId
-	posts: Post[]
+	contents: Content[]
 }
 
 export class Feed extends AggregateRoot<IFeedProps> {
@@ -17,8 +16,8 @@ export class Feed extends AggregateRoot<IFeedProps> {
 		return this.props.memberId
 	}
 
-	get posts(): Post[] {
-		return this.props.posts
+	get contents(): Content[] {
+		return this.props.contents
 	}
 
 	// private calculateScore(poll: Poll): void {}
@@ -29,21 +28,29 @@ export class Feed extends AggregateRoot<IFeedProps> {
 
 	// private rankByScore()
 
-	addNewPost(post: Post) {
-		this.props.posts.push(post)
+	addNewContent(content: Content) {
+		this.props.contents.push(content)
 		this.rankByTime()
 	}
 
-	addNewPosts(posts: Post[]) {
-		this.props.posts.push(...posts)
+	addNewContents(contents: Content[]) {
+		this.props.contents.push(...contents)
 	}
 
-	private rankByScore(): void {
-
+	removeContent(content: Content) {
+		this.props.contents = this.props.contents.filter(pst => pst.id !== content.id)
 	}
+
+	removeContents(contents: Content[]) {
+		for (const content of contents) {
+			this.props.contents = this.props.contents.filter(pst => pst.id !== content.id)
+		}
+	}
+
+	private rankByScore(): void {}
 
 	private rankByTime(): void {
-		this.props.posts.sort((a, b) => a.createdAt.getMilliseconds() - b.createdAt.getMilliseconds())
+		this.props.contents.sort((a, b) => a.createdAt.getMilliseconds() - b.createdAt.getMilliseconds())
 	}
 
 	private rank(): void {
